@@ -149,14 +149,14 @@ public class XmlParsing {
         } else if ("ExtendedInformation".equals(tagName)) {
             processExtendedProductInformation(reader, (List<Map<String, String>>) currentItem.get("extendedInformation"), currentItem);
         } else if ("Packages".equals(tagName)) {
-            List<Map<String, String>> packages = new ArrayList<>();
-            processPackages(reader, packages);
+//            List<Map<String, String>> packages = new ArrayList<>();
+//            processPackages(reader, packages);
+            List<Map<String, String>> packages = processPackages(reader);
             if (currentItem == null) {
                 currentItem = new HashMap<>();
             }
             currentItem.put("packages", packages);
         } else if ("Prices".equals(tagName)) {
-//        List<Map<String, String>> prices = new ArrayList<>();
             List<Map<String, String>> prices = processPrices(reader);
             if (currentItem == null) {
                 currentItem = new HashMap<>();
@@ -301,74 +301,94 @@ public class XmlParsing {
         currentItem.put("descriptions", existingDescriptions);
     }
 
-//    private static List<Map<String, String>> processPackageInformation(XMLEventReader reader) throws XMLStreamException {
-//        List<Map<String, String>> packages = new ArrayList<>();
-//        Map<String, String> currentPackage = null;
-//        boolean insideDimensions = false;
-//        boolean insideWeights = false;
-//
+//        private static void processPackages(XMLEventReader reader, List<Map<String, String>> packagesList) throws Exception {
+//        Debug.logInfo("Processing Packages", MODULE);
 //        while (reader.hasNext()) {
 //            XMLEvent event = reader.nextEvent();
-//
-//            if (event.isStartElement()) {
-//                String tagName = event.asStartElement().getName().getLocalPart();
-//
-//                switch (tagName) {
-//                    case "Package":
-//                        currentPackage = new HashMap<>();
-//                        currentPackage.put("MaintenanceType", getAttributeValue(event.asStartElement(), "MaintenanceType"));
-//                        break;
-//
-//                    case "PackageLevelGTIN":
-//                    case "PackageBarCodeCharacters":
-//                    case "PackageUOM":
-//                    case "QuantityofEaches":
-//                    case "MerchandisingHeight":
-//                    case "MerchandisingWidth":
-//                    case "MerchandisingLength":
-//                    case "ShippingHeight":
-//                    case "ShippingWidth":
-//                    case "ShippingLength":
-//                    case "Weight":
-//                        if (currentPackage != null) {
-//                            currentPackage.put(tagName, getCharacterData(reader));
+//            if (event.isStartElement() && "Package".equals(event.asStartElement().getName().getLocalPart())) {
+//                Map<String, String> packageData = new HashMap<>();
+//                while (reader.hasNext()) {
+//                    event = reader.nextEvent();
+//                    if (event.isStartElement()) {
+//                        String name = event.asStartElement().getName().getLocalPart();
+//                        StringBuilder content = new StringBuilder();
+//                        while (reader.hasNext()) {
+//                            event = reader.nextEvent();
+//                            if (event.isCharacters()) {
+//                                content.append(event.asCharacters().getData().trim());
+//                            } else {
+//                                break;
+//                            }
 //                        }
+//                        packageData.put(name, content.toString());
+//                    } else if (event.isEndElement() && "Package".equals(event.asEndElement().getName().getLocalPart())) {
 //                        break;
-//
-//                    case "InnerQuantity":
-//                        if (currentPackage != null) {
-//                            currentPackage.put("InnerQuantity", getCharacterData(reader));
-//                            currentPackage.put("InnerQuantityUOM", getAttributeValue(event.asStartElement(), "InnerQuantityUOM"));
-//                        }
-//                        break;
-//
-//                    case "Dimensions":
-//                        insideDimensions = true;
-//                        currentPackage.put("DimensionsUOM", getAttributeValue(event.asStartElement(), "UOM"));
-//                        break;
-//
-//                    case "Weights":
-//                        insideWeights = true;
-//                        currentPackage.put("WeightUOM", getAttributeValue(event.asStartElement(), "UOM"));
-//                        break;
+//                    }
 //                }
-//
-//            } else if (event.isEndElement()) {
-//                String tagName = event.asEndElement().getName().getLocalPart();
-//
-//                if ("Dimensions".equals(tagName)) {
-//                    insideDimensions = false;
-//                } else if ("Weights".equals(tagName)) {
-//                    insideWeights = false;
-//                } else if ("Package".equals(tagName) && currentPackage != null) {
-//                    packages.add(currentPackage);
-//                    currentPackage = null;
-//                }
+//                packagesList.add(packageData);
+//                Debug.logInfo("Added package: " + packageData, MODULE);
+//            } else if (event.isEndElement() && "Packages".equals(event.asEndElement().getName().getLocalPart())) {
+//                break;
 //            }
 //        }
-//
-//        return packages;
 //    }
+
+    private static List<Map<String, String>> processPackages(XMLEventReader reader) throws XMLStreamException {
+        List<Map<String, String>> packages = new ArrayList<>();
+        Map<String, String> currentPackage = null;
+        boolean insideDimensions = false;
+        boolean insideWeights = false;
+
+        while (reader.hasNext()) {
+            XMLEvent event = reader.nextEvent();
+            if (event.isStartElement()) {
+                String tagName = event.asStartElement().getName().getLocalPart();
+                switch (tagName) {
+                    case "Package":
+                        currentPackage = new HashMap<>();
+                        break;
+                    case "PackageLevelGTIN":
+                    case "PackageBarCodeCharacters":
+                    case "PackageUOM":
+                    case "QuantityofEaches":
+                    case "MerchandisingHeight":
+                    case "MerchandisingWidth":
+                    case "MerchandisingLength":
+                    case "ShippingHeight":
+                    case "ShippingWidth":
+                    case "ShippingLength":
+                    case "Weight":
+                            currentPackage.put(tagName, getCharacterData(reader));
+                        break;
+                    case "InnerQuantity":
+                            currentPackage.put("InnerQuantity", getCharacterData(reader));
+                            currentPackage.put("InnerQuantityUOM", getAttributeValue(event.asStartElement(), "InnerQuantityUOM"));
+                        break;
+                    case "Dimensions":
+                        insideDimensions = true;
+                        currentPackage.put("DimensionsUOM", getAttributeValue(event.asStartElement(), "UOM"));
+                        break;
+                    case "Weights":
+                        insideWeights = true;
+                        currentPackage.put("WeightUOM", getAttributeValue(event.asStartElement(), "UOM"));
+                        break;
+                }
+            } else if (event.isEndElement()) {
+                String tagName = event.asEndElement().getName().getLocalPart();
+                if ("Dimensions".equals(tagName)) {
+                    insideDimensions = false;
+                } else if ("Weights".equals(tagName)) {
+                    insideWeights = false;
+                } else if ("Package".equals(tagName) && currentPackage != null) {
+                    packages.add(currentPackage);
+                    currentPackage = null;
+                } else if ("Packages".equals(tagName)) {
+                    break;
+                }
+            }
+        }
+        return packages;
+    }
 
     private static List<Map<String, String>> processDigitalAssets(XMLEventReader reader) throws XMLStreamException {
         List<Map<String, String>> digitalAssets = new ArrayList<>();
@@ -464,38 +484,6 @@ public class XmlParsing {
         return prices;
     }
 
-    private static void processPackages(XMLEventReader reader, List<Map<String, String>> packagesList) throws Exception {
-        Debug.logInfo("Processing Packages", MODULE);
-        while (reader.hasNext()) {
-            XMLEvent event = reader.nextEvent();
-            if (event.isStartElement() && "Package".equals(event.asStartElement().getName().getLocalPart())) {
-                Map<String, String> packageData = new HashMap<>();
-                while (reader.hasNext()) {
-                    event = reader.nextEvent();
-                    if (event.isStartElement()) {
-                        String name = event.asStartElement().getName().getLocalPart();
-                        StringBuilder content = new StringBuilder();
-                        while (reader.hasNext()) {
-                            event = reader.nextEvent();
-                            if (event.isCharacters()) {
-                                content.append(event.asCharacters().getData().trim());
-                            } else {
-                                break;
-                            }
-                        }
-                        packageData.put(name, content.toString());
-                    } else if (event.isEndElement() && "Package".equals(event.asEndElement().getName().getLocalPart())) {
-                        break;
-                    }
-                }
-                packagesList.add(packageData);
-                Debug.logInfo("Added package: " + packageData, MODULE);
-            } else if (event.isEndElement() && "Packages".equals(event.asEndElement().getName().getLocalPart())) {
-                break;
-            }
-        }
-    }
-
     private static List<Map<String, String>> processPartInterchangeInfo(XMLEventReader reader, Map<String, Object> currentItem) throws XMLStreamException {
         List<Map<String, String>> partInterchangeList = new ArrayList<>();
 
@@ -534,7 +522,6 @@ public class XmlParsing {
                 break;
             }
         }
-
         return partInterchangeList;
     }
 
@@ -600,28 +587,8 @@ public class XmlParsing {
                             String assetWidth = digitalAssetInfo.getOrDefault("AssetWidth", "");
                             String uri = digitalAssetInfo.getOrDefault("uri", "");
                             String FileType = digitalAssetInfo.getOrDefault("FileType", "");
-//                            String dataResourceId = digitalAssetInfo.getOrDefault("dataResourceId", "");
                             createDataResourceAttribute(dctx, AssetType, representation, background, orientationView, assetHeight, assetWidth, uri, userLogin);
                             createDigitalAssets(dctx, languageCode, FileName, FileType, userLogin);
-
-//                            Map<String, Object> attrServiceInput = UtilMisc.toMap(
-//                                    "assetType", AssetType,
-//                                    "representation", representation,
-//                                    "background", background,
-//                                    "orientationView", orientationView,
-//                                    "assetHeight", assetHeight,
-//                                    "assetWidth", assetWidth,
-//                                    "uri", uri,
-//                                    "userLogin", userLogin
-//                            );
-//                            Map<String, Object> attrServiceResult = dctx.getDispatcher().runSync("createDataResourceAttributes", attrServiceInput);
-//                            if (ServiceUtil.isSuccess(attrServiceResult)) {
-//                                String newDataResourceId = (String) attrServiceResult.get("dataResourceId");
-//                                Debug.logInfo("New DataResource created via service: " + newDataResourceId, MODULE);
-//                            } else {
-//                                Debug.logError("Service failed to create DataResourceAttributes: " + attrServiceResult.get("errorMessage"), MODULE);
-//                            }
-
                         }
                     }
                     if (partInterchangeDetail != null) {
@@ -1205,7 +1172,7 @@ public class XmlParsing {
             GenericValue existingProductCategory = EntityQuery.use(delegator)
                     .from("ProductCategory")
                     .where("categoryName", partBrandAAIAID)
-                    .queryOne();
+                    .queryFirst();
 
             String productCategoryId;
             if (existingProductCategory != null) {
