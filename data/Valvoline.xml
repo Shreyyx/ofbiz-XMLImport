@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PIES xsi:schemaLocation="" xmlns="http://www.autocare.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<entity-engine-xml>
+<Items>
+        <Item MaintenanceType="A"> //this indicates that their is a new product that needs to be added
+            <ItemLevelGTIN GTINQualifier="UP">00028882030595</ItemLevelGTIN> //GoodIdentification: GoodIdentificationTypeId: UPCA , IdValue:00028882030595
+            <PartNumber>899774</PartNumber> //Product: ProductId	
+            <BrandAAIAID>FBVS</BrandAAIAID> //productCategory
+            <BrandLabel>Parts Master</BrandLabel> //Product: Brand Name or productCategory : categoryName
+<!--            <SubBrandAAIAID>GMRG</SubBrandAAIAID> //productCategory following the heirarchy-->
+<!--            <SubBrandLabel>by Valvoline</SubBrandLabel> //productCategory : categoryName-->
+<!--            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize> //Product: QuantityUomId, PiecesIncluded-->
+<!--            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication> //Product: QuantityIncluded-->
+<!--            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity> //Product: OrderDecimalQuantity-->
+<!--            <PartTerminologyID>57314</PartTerminologyID> //ProductCategory: ProductCategoryId-->
+            </Item>
+</Items>
+</entity-engine-xml>
+
+
