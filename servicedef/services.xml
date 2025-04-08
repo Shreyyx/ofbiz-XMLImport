@@ -29,22 +29,8 @@ under the License.
             Dummy service to prevent empty files and syntax error - Remove when the 1st real service will be added here 
         </description>
     </service>
-    <service name="ImportPiesProduct" engine="java"
-             location="com.companyname.ofbizdemo.services.ImportPiesProduct"
-             require-new-transaction="true" transaction-timeout="20"
-             invoke="importPiesProduct">
-        <attribute name="filePath" type="String" mode="IN" optional="false"/>
-    </service>
-    <service name="XmlParsingService" engine="java"
-             location="com.companyname.ofbizdemo.services.XmlParsingService"
-             require-new-transaction="true" transaction-timeout="20"
-             invoke="parseXmlFile">
-        <attribute name="filePath" type="String" mode="IN" optional="false"/>
-        <attribute name="itemCount" type="Integer" mode="OUT"/>
-        <attribute name="itemsList" type="List" mode="OUT"/>
-    </service>
     <service name="XmlParsing" engine="java"
-             location="com.companyname.ofbizdemo.services.XmlParsing"
+             location="com.companyname.ofbidemo.services.XmlParsing"
              require-new-transaction="true" transaction-timeout="20"
              invoke="parseXml">
         <attribute name="filePath" type="String" mode="IN" optional="false"/>
