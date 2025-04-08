@@ -15,6 +15,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 import org.apache.ofbiz.entity.util.EntityQuery;
+import org.apache.ofbiz.service.LocalDispatcher;
 import org.apache.ofbiz.entity.Delegator;
 import javax.xml.stream.events.StartElement;
 import org.apache.ofbiz.base.util.UtilDateTime;
@@ -75,10 +76,10 @@ public class XmlParsing {
                         insideItem = false;
                         //objects.toString is used to handle nullPointerException
                         String partNumber = Objects.toString(currentItem.get("PartNumber"), "");
+                        String itemLevelGTIN = Objects.toString(currentItem.get("ItemLevelGTIN"), "");
                         String itemQuantitySize = Objects.toString(currentItem.get("ItemQuantitySize"), "");
                         String quantityPerApplication = Objects.toString(currentItem.get("QuantityPerApplication"), "");
-                        String minimumOrderQuantity = Objects.toString(currentItem.get("MinimumOrderQuantity"), "");
-                        String itemLevelGTIN = Objects.toString(currentItem.get("ItemLevelGTIN"), "");
+//                        String minimumOrderQuantity = Objects.toString(currentItem.get("MinimumOrderQuantity"), "");
                         String brandAAIAID = Objects.toString(currentItem.get("BrandAAIAID"), "");
                         String brandLabel = Objects.toString(currentItem.get("BrandLabel"), "");
                         String partTerminologyID = Objects.toString(currentItem.get("PartTerminologyID"),"");
@@ -100,7 +101,7 @@ public class XmlParsing {
                         Debug.logInfo("Final digital asset details for item: " + digitalAssets, MODULE);
                         Debug.logInfo("Final part interchange details for item: " + partInterchangeInfo, MODULE);
 
-                        Map<String, Object> createdItem = createItem(dctx, partNumber, itemQuantitySize, quantityPerApplication, partTerminologyID, minimumOrderQuantity, itemLevelGTIN, brandAAIAID, brandLabel, descriptions, extendedInformation, productAttributes, packages, prices, digitalAssets, partInterchangeInfo, userLogin);
+                        Map<String, Object> createdItem = createItem(dctx, partNumber, itemQuantitySize, quantityPerApplication, partTerminologyID, itemLevelGTIN, brandAAIAID, brandLabel, descriptions, extendedInformation, productAttributes, packages, prices, digitalAssets, partInterchangeInfo, userLogin);
                         Debug.logInfo("Create Item Response: " + createdItem, MODULE);
                         itemsList.add(currentItem);
                         itemCount++;
@@ -128,7 +129,7 @@ public class XmlParsing {
         Debug.logInfo("Processing attribute: " + tagName, MODULE);
         //used to store values of these tags if these tags are encountered
         //list.of()--> creates an immutable list from the given elements , we can also use or symbol "||"
-        if (List.of("PartNumber", "ItemLevelGTIN", "PartTerminologyID", "BrandAAIAID", "BrandLabel", "ItemQuantitySize", "MinimumOrderQuantity", "QuantityPerApplication").contains(tagName)) {
+        if (List.of("PartNumber", "ItemLevelGTIN", "BrandAAIAID", "BrandLabel", "PartTerminologyID", "ItemQuantitySize", "QuantityPerApplication").contains(tagName)) {
             XMLEvent nextEvent = reader.nextEvent();
             if (nextEvent.isCharacters()) { //isCharacter checks if the next event is a text
                 String value = nextEvent.asCharacters().getData().trim(); //extracts the actual text from XML tag
@@ -369,46 +370,6 @@ public class XmlParsing {
 //        return packages;
 //    }
 
-
-
-//    (old) private static List<Map<String, String>> processDigitalAssets(XMLEventReader reader) throws XMLStreamException {
-//        List<Map<String, String>> digitalAssets = new ArrayList<>();
-//        Map<String, String> currentDigitalAsset = null;
-//        while (reader.hasNext()) {
-//            XMLEvent event = reader.nextEvent();
-//            if (event.isStartElement()) {
-//                String tagName = event.asStartElement().getName().getLocalPart();
-//                switch (tagName) {
-//                    case "DigitalFileInformation":
-//                        currentDigitalAsset = new HashMap<>();
-//                        String languageCode = getAttributeValue(event.asStartElement(), "LanguageCode");
-//                        currentDigitalAsset.put("LanguageCode", languageCode);
-//                        break;
-//                        case "FileName":
-//                            currentDigitalAsset.put("FileName", getCharacterData(reader));
-//                            break;
-//                            case "AssetType":
-//                                currentDigitalAsset.put("AssetType", getCharacterData(reader));
-//                                break;
-//                    case "FileType":
-//                        currentDigitalAsset.put("FileType", getCharacterData(reader));
-//                        break;
-//
-//                }
-//            } else if (event.isEndElement()) {
-//                String tagName = event.asEndElement().getName().getLocalPart();
-//                if ("DigitalFileInformation".equals(tagName) && currentDigitalAsset != null) {
-//                    digitalAssets.add(currentDigitalAsset);
-//                } else if ("DigitalAssets".equals(tagName)) {
-//                    break;
-//                }
-//            }
-//        }
-//        return digitalAssets;
-//    }
-
-    //new
-
     private static List<Map<String, String>> processDigitalAssets(XMLEventReader reader) throws XMLStreamException {
         List<Map<String, String>> digitalAssets = new ArrayList<>();
         Map<String, String> currentDigitalAsset = null;
@@ -577,7 +538,7 @@ public class XmlParsing {
         return partInterchangeList;
     }
 
-    private static Map<String, Object> createItem(DispatchContext dctx, String partNumber, String itemQuantitySize, String quantityPerApplication, String minimumOrderQuantity, String itemLevelGTIN, String brandAAIAID, String brandLabel, String partTerminologyID, List<Map<String, String>> descriptions, List<Map<String, String>> extendedInformation, List<Map<String, String>> productAttributes, List<Map<String, String>> packageDetails, List<Map<String, String>> priceDetail, List<Map<String, String>> digitalAssetDetail, List<Map<String, String>> partInterchangeDetail,
+    private static Map<String, Object> createItem(DispatchContext dctx, String partNumber, String itemQuantitySize, String quantityPerApplication, String itemLevelGTIN, String brandAAIAID, String brandLabel, String partTerminologyID, List<Map<String, String>> descriptions, List<Map<String, String>> extendedInformation, List<Map<String, String>> productAttributes, List<Map<String, String>> packageDetails, List<Map<String, String>> priceDetail, List<Map<String, String>> digitalAssetDetail, List<Map<String, String>> partInterchangeDetail,
             GenericValue userLogin) {
 
         Map<String, Object> response = new HashMap<>();
@@ -595,7 +556,7 @@ public class XmlParsing {
                         "internalName", partNumber,
                         "piecesIncluded", itemQuantitySize,
                         "quantityIncluded", quantityPerApplication,
-                        "orderDecimalQuantity", minimumOrderQuantity,
+                        "orderDecimalQuantity", "1",
                         "userLogin", userLogin
                 );
                 Debug.logInfo("Creating new product: " + productParams, MODULE);
@@ -639,9 +600,28 @@ public class XmlParsing {
                             String assetWidth = digitalAssetInfo.getOrDefault("AssetWidth", "");
                             String uri = digitalAssetInfo.getOrDefault("uri", "");
                             String FileType = digitalAssetInfo.getOrDefault("FileType", "");
-                            String dataResourceId = digitalAssetInfo.getOrDefault("dataResourceId", "");
-                            createDataResourceAttribute(dctx, dataResourceId, AssetType, representation, background, orientationView, assetHeight, assetWidth, uri, userLogin);
+//                            String dataResourceId = digitalAssetInfo.getOrDefault("dataResourceId", "");
+                            createDataResourceAttribute(dctx, AssetType, representation, background, orientationView, assetHeight, assetWidth, uri, userLogin);
                             createDigitalAssets(dctx, languageCode, FileName, FileType, userLogin);
+
+//                            Map<String, Object> attrServiceInput = UtilMisc.toMap(
+//                                    "assetType", AssetType,
+//                                    "representation", representation,
+//                                    "background", background,
+//                                    "orientationView", orientationView,
+//                                    "assetHeight", assetHeight,
+//                                    "assetWidth", assetWidth,
+//                                    "uri", uri,
+//                                    "userLogin", userLogin
+//                            );
+//                            Map<String, Object> attrServiceResult = dctx.getDispatcher().runSync("createDataResourceAttributes", attrServiceInput);
+//                            if (ServiceUtil.isSuccess(attrServiceResult)) {
+//                                String newDataResourceId = (String) attrServiceResult.get("dataResourceId");
+//                                Debug.logInfo("New DataResource created via service: " + newDataResourceId, MODULE);
+//                            } else {
+//                                Debug.logError("Service failed to create DataResourceAttributes: " + attrServiceResult.get("errorMessage"), MODULE);
+//                            }
+
                         }
                     }
                     if (partInterchangeDetail != null) {
@@ -766,7 +746,6 @@ public class XmlParsing {
                     return;
                 }
             }
-
             GenericValue existingBrandCategory = EntityQuery.use(delegator)
                     .from("ProductCategory")
                     .where("categoryName", brandAAIAID,
@@ -994,20 +973,26 @@ public class XmlParsing {
                     .queryOne();
 
             if (productFeatureCategory == null) {
-                Map<String, Object> params = UtilMisc.toMap(
-                        "productFeatureCategoryId", "PACKAGE",
-                        "description", "This will contain information about package",
-                        "userLogin", userLogin
-                );
-                Map<String, Object> result = dctx.getDispatcher().runSync("createProductFeatureCategory", params);
-
-                if (ServiceUtil.isSuccess(result)) {
-                    Debug.logInfo("ProductFeatureCategory 'PACKAGE' created successfully!", MODULE);
-                } else {
-                    Debug.logError("Error creating Product Feature Category: " + result.get("errorMessage"), MODULE);
-                    return;
-                }
+                GenericValue newCategory = delegator.makeValue("ProductFeatureCategory");
+                newCategory.set("productFeatureCategoryId", "PACKAGE");
+                newCategory.set("description", "This will contain information about package");
+                delegator.create(newCategory);
+                Debug.logInfo("ProductFeatureCategory 'PACKAGE' created successfully!", MODULE);
             }
+//                Map<String, Object> params = UtilMisc.toMap(
+//                        "productFeatureCategoryId", "PACKAGE",
+//                        "description", "This will contain information about package",
+//                        "userLogin", userLogin
+//                );
+//                Map<String, Object> result = dctx.getDispatcher().runSync("createProductFeatureCategory", params);
+//
+//                if (ServiceUtil.isSuccess(result)) {
+//                    Debug.logInfo("ProductFeatureCategory 'PACKAGE' created successfully!", MODULE);
+//                } else {
+//                    Debug.logError("Error creating Product Feature Category: " + result.get("errorMessage"), MODULE);
+//                    return;
+//                }
+//            }
 
             if (UtilValidate.isNotEmpty(packageLevelGTIN) && UtilValidate.isNotEmpty(packageBarCodeCharacters)) {
                 Debug.logInfo("Creating Package Feature for GTIN: " + packageLevelGTIN, MODULE);
@@ -1088,6 +1073,7 @@ public class XmlParsing {
                     "productPricePurposeId", "PURCHASE",
                     "currencyUomId", "USD",
                     "productStoreGroupId", "_NA_",
+                    "termUomID", "PE",
                     "fromDate", UtilDateTime.nowTimestamp(),
                     "price", price,
                     "userLogin", userLogin
@@ -1132,29 +1118,42 @@ public class XmlParsing {
         }
     }
 
-    private static void createDataResourceAttribute(DispatchContext dctx, String dataResourceId, String assetType, String representation, String background, String orientationView, String assetHeight, String assetWidth, String uri, GenericValue userLogin
-    ) {
-        Delegator delegator = dctx.getDelegator();
+    private static void createDataResourceAttribute(DispatchContext dctx, String assetType, String representation, String background, String orientationView, String assetHeight, String assetWidth, String uri, GenericValue userLogin) {
 
-        Map<String, String> attributes = new HashMap<>();
-        attributes.put("AssetType", assetType);
-        attributes.put("Representation", representation);
-        attributes.put("Background", background);
-        attributes.put("OrientationView", orientationView);
-        attributes.put("AssetHeight", assetHeight);
-        attributes.put("AssetWidth", assetWidth);
-        attributes.put("uri", uri);
+        Delegator delegator = dctx.getDelegator();
+        LocalDispatcher dispatcher = dctx.getDispatcher();
+        String dataResourceId = delegator.getNextSeqId("DataResource");
 
         try {
+            Map<String, Object> createDataResourceCtx = UtilMisc.toMap(
+                    "dataResourceId", dataResourceId,
+                    "dataResourceTypeId", "IMAGE_OBJECT",
+                    "statusId", "CTNT_PUBLISHED",
+                    "dataResourceName", "AutoCreatedDataResource",
+                    "userLogin", userLogin
+            );
+            Map<String, Object> dataResourceResult = dispatcher.runSync("createDataResource", createDataResourceCtx);
+            if (ServiceUtil.isError(dataResourceResult)) {
+                Debug.logError("Error creating DataResource: " + dataResourceResult.get("errorMessage"), MODULE);
+                return;
+            }
+            Debug.logInfo("Successfully created DataResource with ID: " + dataResourceId, MODULE);
+            Map<String, String> attributes = new HashMap<>();
+            attributes.put("AssetType", assetType);
+            attributes.put("Representation", representation);
+            attributes.put("Background", background);
+            attributes.put("OrientationView", orientationView);
+            attributes.put("AssetHeight", assetHeight);
+            attributes.put("AssetWidth", assetWidth);
+            attributes.put("uri", uri);
             for (Map.Entry<String, String> entry : attributes.entrySet()) {
                 String tagName = entry.getKey();
                 String tagValue = entry.getValue();
-
+                if (UtilValidate.isEmpty(tagValue)) continue;
                 GenericValue existingAttr = EntityQuery.use(delegator)
                         .from("DataResourceAttribute")
                         .where("dataResourceId", dataResourceId, "attrName", tagName)
                         .queryOne();
-
                 if (UtilValidate.isEmpty(existingAttr)) {
                     Map<String, Object> params = UtilMisc.toMap(
                             "dataResourceId", dataResourceId,
@@ -1162,9 +1161,7 @@ public class XmlParsing {
                             "attrValue", tagValue,
                             "userLogin", userLogin
                     );
-
-                    Map<String, Object> result = dctx.getDispatcher().runSync("createDataResourceAttribute", params);
-
+                    Map<String, Object> result = dispatcher.runSync("createDataResourceAttribute", params);
                     if (ServiceUtil.isSuccess(result)) {
                         Debug.logInfo("Created DataResourceAttribute: " + tagName + " = " + tagValue, MODULE);
                     } else {
