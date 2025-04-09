@@ -22,6 +22,7 @@ import org.apache.ofbiz.base.util.UtilDateTime;
 import javax.xml.stream.events.XMLEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.io.InputStream;
 import java.util.*;
 import java.sql.Timestamp;
@@ -149,8 +150,6 @@ public class XmlParsing {
         } else if ("ExtendedInformation".equals(tagName)) {
             processExtendedProductInformation(reader, (List<Map<String, String>>) currentItem.get("extendedInformation"), currentItem);
         } else if ("Packages".equals(tagName)) {
-//            List<Map<String, String>> packages = new ArrayList<>();
-//            processPackages(reader, packages);
             List<Map<String, String>> packages = processPackages(reader);
             if (currentItem == null) {
                 currentItem = new HashMap<>();
@@ -301,38 +300,6 @@ public class XmlParsing {
         currentItem.put("descriptions", existingDescriptions);
     }
 
-//        private static void processPackages(XMLEventReader reader, List<Map<String, String>> packagesList) throws Exception {
-//        Debug.logInfo("Processing Packages", MODULE);
-//        while (reader.hasNext()) {
-//            XMLEvent event = reader.nextEvent();
-//            if (event.isStartElement() && "Package".equals(event.asStartElement().getName().getLocalPart())) {
-//                Map<String, String> packageData = new HashMap<>();
-//                while (reader.hasNext()) {
-//                    event = reader.nextEvent();
-//                    if (event.isStartElement()) {
-//                        String name = event.asStartElement().getName().getLocalPart();
-//                        StringBuilder content = new StringBuilder();
-//                        while (reader.hasNext()) {
-//                            event = reader.nextEvent();
-//                            if (event.isCharacters()) {
-//                                content.append(event.asCharacters().getData().trim());
-//                            } else {
-//                                break;
-//                            }
-//                        }
-//                        packageData.put(name, content.toString());
-//                    } else if (event.isEndElement() && "Package".equals(event.asEndElement().getName().getLocalPart())) {
-//                        break;
-//                    }
-//                }
-//                packagesList.add(packageData);
-//                Debug.logInfo("Added package: " + packageData, MODULE);
-//            } else if (event.isEndElement() && "Packages".equals(event.asEndElement().getName().getLocalPart())) {
-//                break;
-//            }
-//        }
-//    }
-
     private static List<Map<String, String>> processPackages(XMLEventReader reader) throws XMLStreamException {
         List<Map<String, String>> packages = new ArrayList<>();
         Map<String, String> currentPackage = null;
@@ -349,8 +316,6 @@ public class XmlParsing {
                         break;
                     case "PackageLevelGTIN":
                     case "PackageBarCodeCharacters":
-                    case "PackageUOM":
-                    case "QuantityofEaches":
                     case "MerchandisingHeight":
                     case "MerchandisingWidth":
                     case "MerchandisingLength":
@@ -609,14 +574,19 @@ public class XmlParsing {
                             storeProductAttribute(dctx, partNumber, attributeId, finalProductAttributeText, userLogin);
                         }
                     }
-                    if (packageDetails!=null) {
-                        for (Map<String, String> packageInfo : packageDetails) {
-                            String packageLevelGTIN = packageInfo.getOrDefault("PackageLevelGTIN", "");
-                            String packageBarCodeCharacters = packageInfo.getOrDefault("PackageBarCode", "");
-                            String productFeatureId = packageInfo.getOrDefault("ProductFeatureId", partNumber + "_PKG");
-                            Debug.logInfo("Creating package with ProductFeatureId: " + productFeatureId, MODULE);
-                            createPackages(dctx, packageLevelGTIN, packageBarCodeCharacters, productFeatureId, userLogin);
-                        }
+//                    if (packageDetails!=null) {
+//                        for (Map<String, String> packageInfo : packageDetails) {
+//                            String packageLevelGTIN = packageInfo.getOrDefault("PackageLevelGTIN", "");
+//                            String packageBarCodeCharacters = packageInfo.getOrDefault("PackageBarCode", "");
+//                            String productFeatureId = packageInfo.getOrDefault("ProductFeatureId", partNumber + "_PKG");
+//                            Debug.logInfo("Creating package with ProductFeatureId: " + productFeatureId, MODULE);
+//                            Debug.logInfo("Creating package features for part: " + partNumber, MODULE);
+//                            createPackages(dctx, packageDetails, userLogin);
+////                            createPackages(dctx, packageLevelGTIN, packageBarCodeCharacters, productFeatureId, userLogin);
+//                        }
+//                    }
+                    if (packageDetails != null) {
+                        createPackages(dctx, packageDetails, userLogin);
                     }
                 } else {
                     Debug.logError("Failed to create product: " + result.get("errorMessage"), MODULE);
@@ -930,7 +900,75 @@ public class XmlParsing {
         }
     }
 
-    public static void createPackages(DispatchContext dctx, String packageLevelGTIN, String packageBarCodeCharacters, String productFeatureId, GenericValue userLogin) {
+//    public static void createPackages(DispatchContext dctx, String packageLevelGTIN, String packageBarCodeCharacters, String productFeatureId, GenericValue userLogin) {
+//        Delegator delegator = dctx.getDelegator();
+//
+//        try {
+//            GenericValue productFeatureCategory = EntityQuery.use(delegator)
+//                    .from("ProductFeatureCategory")
+//                    .where("productFeatureCategoryId", "PACKAGE")
+//                    .queryOne();
+//
+//            if (productFeatureCategory == null) {
+//                GenericValue newCategory = delegator.makeValue("ProductFeatureCategory");
+//                newCategory.set("productFeatureCategoryId", "PACKAGE");
+//                newCategory.set("description", "This will contain information about package");
+//                delegator.create(newCategory);
+//                Debug.logInfo("ProductFeatureCategory 'PACKAGE' created successfully!", MODULE);
+//            }
+//
+//            if (UtilValidate.isNotEmpty(packageLevelGTIN) && UtilValidate.isNotEmpty(packageBarCodeCharacters)) {
+//                Debug.logInfo("Creating Package Feature for GTIN: " + packageLevelGTIN, MODULE);
+//                createProductFeatureEntry(dctx, productFeatureId, packageLevelGTIN, userLogin);
+//                Debug.logInfo("Creating Package Barcode Feature: " + packageBarCodeCharacters, MODULE);
+//                createProductFeatureEntry(dctx, productFeatureId + "_BC", packageBarCodeCharacters, userLogin);
+//            }
+//
+//        } catch (Exception e) {
+//            Debug.logError("Unexpected error while creating product feature: " + e.getMessage(), MODULE);
+//        }
+//    }
+//
+//    private static void createProductFeatureEntry(DispatchContext dctx, String productFeatureId, String numberSpecified, GenericValue userLogin) {
+//        Delegator delegator = dctx.getDelegator();
+//
+//        try {
+//            if (UtilValidate.isEmpty(numberSpecified)) {
+//                Debug.logWarning("numberSpecified is empty for ProductFeatureId: " + productFeatureId, MODULE);
+//                return;
+//            }
+//
+//            GenericValue existingFeature = EntityQuery.use(delegator)
+//                    .from("ProductFeature")
+//                    .where("productFeatureId", productFeatureId)
+//                    .queryOne();
+//
+//            if (existingFeature != null) {
+//                Debug.logWarning("ProductFeature already exists: " + productFeatureId + " -> Skipping creation.", MODULE);
+//                return;
+//            }
+//
+//            Map<String, Object> params = UtilMisc.toMap(
+//                    "productFeatureId", productFeatureId,
+//                    "productFeatureTypeId", "OTHER_FEATURE",
+//                    "productFeatureCategoryId", "PACKAGE",
+//                    "numberSpecified", numberSpecified,
+//                    "description", "packageInfo",
+//                    "userLogin", userLogin
+//            );
+//            Map<String, Object> result = dctx.getDispatcher().runSync("createProductFeature", params);
+//
+//            if (ServiceUtil.isSuccess(result)) {
+//                Debug.logInfo("Created ProductFeature successfully: " + productFeatureId, MODULE);
+//            } else {
+//                Debug.logError("Failed to create ProductFeature: " + result.get("errorMessage"), MODULE);
+//            }
+//        } catch (Exception e) {
+//            Debug.logError("Exception in createProductFeatureEntry: " + e.getMessage(), MODULE);
+//        }
+//    }
+
+    public static void createPackages(DispatchContext dctx, List<Map<String, String>> packages, GenericValue userLogin) {
         Delegator delegator = dctx.getDelegator();
 
         try {
@@ -938,77 +976,52 @@ public class XmlParsing {
                     .from("ProductFeatureCategory")
                     .where("productFeatureCategoryId", "PACKAGE")
                     .queryOne();
-
             if (productFeatureCategory == null) {
-                GenericValue newCategory = delegator.makeValue("ProductFeatureCategory");
-                newCategory.set("productFeatureCategoryId", "PACKAGE");
-                newCategory.set("description", "This will contain information about package");
-                delegator.create(newCategory);
+                Map<String, Object> catCtx = UtilMisc.toMap(
+                        "productFeatureCategoryId", "PACKAGE",
+                        "description", "This will contain information about package",
+                        "userLogin", userLogin
+                );
+                dctx.getDispatcher().runSync("createProductFeatureCategory", catCtx);
                 Debug.logInfo("ProductFeatureCategory 'PACKAGE' created successfully!", MODULE);
             }
-//                Map<String, Object> params = UtilMisc.toMap(
-//                        "productFeatureCategoryId", "PACKAGE",
-//                        "description", "This will contain information about package",
-//                        "userLogin", userLogin
-//                );
-//                Map<String, Object> result = dctx.getDispatcher().runSync("createProductFeatureCategory", params);
-//
-//                if (ServiceUtil.isSuccess(result)) {
-//                    Debug.logInfo("ProductFeatureCategory 'PACKAGE' created successfully!", MODULE);
-//                } else {
-//                    Debug.logError("Error creating Product Feature Category: " + result.get("errorMessage"), MODULE);
-//                    return;
-//                }
-//            }
+            for (Map<String, String> pkg : packages) {
+                for (Map.Entry<String, String> entry : pkg.entrySet()) {
+                    String tagName = entry.getKey();
+                    String tagValue = entry.getValue();
 
-            if (UtilValidate.isNotEmpty(packageLevelGTIN) && UtilValidate.isNotEmpty(packageBarCodeCharacters)) {
-                Debug.logInfo("Creating Package Feature for GTIN: " + packageLevelGTIN, MODULE);
-                createProductFeatureEntry(dctx, productFeatureId, packageLevelGTIN, userLogin);
-                Debug.logInfo("Creating Package Barcode Feature: " + packageBarCodeCharacters, MODULE);
-                createProductFeatureEntry(dctx, productFeatureId + "_BC", packageBarCodeCharacters, userLogin);
-            }
+                    if (UtilValidate.isEmpty(tagValue)) continue;
 
-        } catch (Exception e) {
-            Debug.logError("Unexpected error while creating product feature: " + e.getMessage(), MODULE);
-        }
-    }
+                    String productFeatureId = delegator.getNextSeqId("ProductFeature");
+                    String productFeatureTypeId;
 
-    private static void createProductFeatureEntry(DispatchContext dctx, String productFeatureId, String numberSpecified, GenericValue userLogin) {
-        Delegator delegator = dctx.getDelegator();
+                    if ("Weight".equalsIgnoreCase(tagName)) {
+                        productFeatureTypeId = "NET_WEIGHT";
+                    } else if (tagName.startsWith("Merchandising") || tagName.startsWith("Shipping") || "DimensionsUOM".equals(tagName)) {
+                        productFeatureTypeId = "DIMENSION";
+                    } else {
+                        productFeatureTypeId = "OTHER_FEATURE";
+                    }
 
-        try {
-            if (UtilValidate.isEmpty(numberSpecified)) {
-                Debug.logWarning("numberSpecified is empty for ProductFeatureId: " + productFeatureId, MODULE);
-                return;
-            }
+                    Map<String, Object> featureCtx = new HashMap<>();
+                    featureCtx.put("productFeatureId", productFeatureId);
+                    featureCtx.put("productFeatureTypeId", productFeatureTypeId);
+                    featureCtx.put("productFeatureCategoryId", "PACKAGE");
+                    featureCtx.put("description",tagName);
+                    featureCtx.put("numberSpecified", tagValue);
+                    featureCtx.put("userLogin", userLogin);
+                    Debug.logInfo("Creating ProductFeature with context: " + featureCtx, MODULE);
 
-            GenericValue existingFeature = EntityQuery.use(delegator)
-                    .from("ProductFeature")
-                    .where("productFeatureId", productFeatureId)
-                    .queryOne();
-
-            if (existingFeature != null) {
-                Debug.logWarning("ProductFeature already exists: " + productFeatureId + " -> Skipping creation.", MODULE);
-                return;
-            }
-
-            Map<String, Object> params = UtilMisc.toMap(
-                    "productFeatureId", productFeatureId,
-                    "productFeatureTypeId", "OTHER_FEATURE",
-                    "productFeatureCategoryId", "PACKAGE",
-                    "numberSpecified", numberSpecified,
-                    "description", "packageInfo",
-                    "userLogin", userLogin
-            );
-            Map<String, Object> result = dctx.getDispatcher().runSync("createProductFeature", params);
-
-            if (ServiceUtil.isSuccess(result)) {
-                Debug.logInfo("Created ProductFeature successfully: " + productFeatureId, MODULE);
-            } else {
-                Debug.logError("Failed to create ProductFeature: " + result.get("errorMessage"), MODULE);
+                    Map<String, Object> result = dctx.getDispatcher().runSync("createProductFeature", featureCtx);
+                    if (ServiceUtil.isSuccess(result)) {
+                        Debug.logInfo("Created ProductFeature: " + tagName + " = " + tagValue, MODULE);
+                    } else {
+                        Debug.logError("Failed to create ProductFeature for " + tagName + ": " + result.get("errorMessage"), MODULE);
+                    }
+                }
             }
         } catch (Exception e) {
-            Debug.logError("Exception in createProductFeatureEntry: " + e.getMessage(), MODULE);
+            Debug.logError("Exception while creating package features: " + e.getMessage(), MODULE);
         }
     }
 
