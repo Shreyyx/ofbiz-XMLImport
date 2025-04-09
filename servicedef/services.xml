@@ -37,13 +37,22 @@ under the License.
         <attribute name="itemCount" type="Integer" mode="OUT"/>
         <attribute name="itemsList" type="List" mode="OUT"/>
     </service>
+
+    <service name="Parser" engine="java"
+             location="com.companyname.ofbizdemo.services.Parser"
+             require-new-transaction="true" transaction-timeout="20"
+             invoke="parse">
+        <attribute name="filePath" type="String" mode="IN" optional="false"/>
+        <attribute name="itemCount" type="Integer" mode="OUT"/>
+        <attribute name="itemsList" type="List" mode="OUT"/>
+    </service>
+
     <service name="createDataResourceAttributes"
              engine="java"
              location="com.companyname.ofbizdemo.services.DataResourceAttributeService"
              invoke="createDataResourceAttributes"
              auth="true"
              require-new-transaction="true">
-
         <attribute name="dataResourceId" type="String" mode="OUT" optional="false"/>
         <attribute name="assetType" type="String" mode="IN" optional="true"/>
         <attribute name="representation" type="String" mode="IN" optional="true"/>
