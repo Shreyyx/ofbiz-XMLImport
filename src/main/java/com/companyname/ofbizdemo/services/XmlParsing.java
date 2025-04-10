@@ -44,9 +44,12 @@ public class XmlParsing {
             return ServiceUtil.returnError("User login is required.");
         }
 
-        //class for reading binary data from files
+        //class for reading binary data from files and creates an input stream that will read bytes from the file
         try (InputStream inputStream = new FileInputStream(new File(filePath))) {
+            //it is the abstract factory class responsible for creating XML Stream readers
+            //creates an instance of XMLInputFactory
             XMLInputFactory factory = XMLInputFactory.newInstance();
+            //we use this created factory to create an event-based reader
             XMLEventReader reader = factory.createXMLEventReader(inputStream);
 
             while (reader.hasNext()) {
@@ -62,7 +65,8 @@ public class XmlParsing {
                         insideItem = true;
                         //create a new hashmap and store it in variable currentItem
                         currentItem = new HashMap<>();
-                        //created an empty array list to store it in the currentItem
+                        //created an empty list to store it in the currentItem and to store multiple info
+                        //currentItem.put temporarily holds all parsed data for that item
                         currentItem.put("packages", new ArrayList<>());
                         currentItem.put("descriptions", new ArrayList<>());
                         currentItem.put("extendedInformation", new ArrayList<>());
@@ -90,7 +94,7 @@ public class XmlParsing {
                         String subBrandLabel = Objects.toString(currentItem.get("SubBrandLabel"), "");
                         String partTerminologyID = Objects.toString(currentItem.get("PartTerminologyID"),"");
 
-                        //retrive details from the currentItem and then a list of maps is created
+                        //retrive details from the currentItem and then a list of maps is created because each tag here contains multiple entries
                         List<Map<String, String>> descriptions = (List<Map<String, String>>) currentItem.get("descriptions");
                         List<Map<String, String>> extendedInformation = (List<Map<String, String>>) currentItem.get("extendedInformation");
                         List<Map<String, String>> productAttributes = (List<Map<String, String>>) currentItem.get("productAttributes");
@@ -129,6 +133,8 @@ public class XmlParsing {
         result.put("itemCount", itemCount);
         return result;
     }
+
+    //XML Event Reader allows you to sequentially read events without loading the entire document into the memory
 
     private static void processItemAttributes(XMLEventReader reader, String tagName, Map<String, Object> currentItem) throws Exception {
         Debug.logInfo("Processing attribute: " + tagName, MODULE);
