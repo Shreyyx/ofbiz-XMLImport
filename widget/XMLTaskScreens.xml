@@ -29,6 +29,9 @@ under the License.
             <widgets>
                 <decorator-screen name="XMLTaskCommonDecorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
+                        <screenlet title="Read Xml File">
+                            <include-form name="ReadXmlFile" location="component://XMLTask/widget/XMLTaskForms.xml"/>
+                        </screenlet>
                     </decorator-section>
                 </decorator-screen>
             </widgets>

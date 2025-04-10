@@ -44,6 +44,7 @@ public class XmlParsing {
             return ServiceUtil.returnError("User login is required.");
         }
 
+        //class for reading binary data from files
         try (InputStream inputStream = new FileInputStream(new File(filePath))) {
             XMLInputFactory factory = XMLInputFactory.newInstance();
             XMLEventReader reader = factory.createXMLEventReader(inputStream);
@@ -59,7 +60,9 @@ public class XmlParsing {
                         insideItems = true;
                     } else if ("Item".equals(tagName) && insideItems) {
                         insideItem = true;
+                        //create a new hashmap and store it in variable currentItem
                         currentItem = new HashMap<>();
+                        //created an empty array list to store it in the currentItem
                         currentItem.put("packages", new ArrayList<>());
                         currentItem.put("descriptions", new ArrayList<>());
                         currentItem.put("extendedInformation", new ArrayList<>());
@@ -131,11 +134,13 @@ public class XmlParsing {
         Debug.logInfo("Processing attribute: " + tagName, MODULE);
         //used to store values of these tags if these tags are encountered
         //list.of()--> creates an immutable list from the given elements , we can also use or symbol "||"
+        //we can also use Arrays.asList here to create a mutable list
         if (List.of("PartNumber", "ItemLevelGTIN", "ItemQuantitySize", "QuantityPerApplication", "BrandAAIAID", "BrandLabel", "SubBrandAAIAID", "SubBrandLabel", "PartTerminologyID").contains(tagName)) {
             XMLEvent nextEvent = reader.nextEvent();
             if (nextEvent.isCharacters()) { //isCharacter checks if the next event is a text
                 String value = nextEvent.asCharacters().getData().trim(); //extracts the actual text from XML tag
-                if ("PartNumber".equals(tagName) && !currentItem.containsKey("PartNumber")) { //used if partNumber is not stored it stores or else it does not
+                //used if partNumber is not stored it stores or else it does not, it check whether it is stored in the cuurentItem to store it just once for that item
+                if ("PartNumber".equals(tagName) && !currentItem.containsKey("PartNumber")) {
                     currentItem.put("PartNumber", value);
                     Debug.logInfo("Stored PartNumber: " + value, MODULE);
                 } else if (!"PartNumber".equals(tagName)) {
@@ -153,7 +158,7 @@ public class XmlParsing {
         } else if ("Packages".equals(tagName)) {
             List<Map<String, String>> packages = processPackages(reader);
             if (currentItem == null) {
-                currentItem = new HashMap<>();
+                currentItem = new HashMap<>(); //avoids null pointer exception
             }
             currentItem.put("packages", packages);
         } else if ("Prices".equals(tagName)) {
@@ -194,6 +199,7 @@ public class XmlParsing {
             if (event.isStartElement() && "ProductAttribute".equals(event.asStartElement().getName().getLocalPart())) {
                 StartElement startElement = event.asStartElement();
                 Attribute attributeIDAttr = startElement.getAttributeByName(new QName("AttributeID"));
+                //checks if the attribute it not null, else just returns an empty string
                 String attributeID = (attributeIDAttr != null) ? attributeIDAttr.getValue() : "";
                 //String builder improves efficiency, since strings are immutable in java each modification will create a new string, String Builder avoids this overhead
                 StringBuilder productAttributeText = new StringBuilder();
@@ -591,60 +597,6 @@ public class XmlParsing {
         return response;
     }
 
-    public static void createProductCategoryRollup(DispatchContext dctx, String brandAAIAID, String subBrandAAIAID, GenericValue userLogin) {
-        Delegator delegator = dctx.getDelegator();
-
-        try {
-            GenericValue parentCategory = EntityQuery.use(delegator)
-                    .from("ProductCategory")
-                    .where("categoryName", brandAAIAID, "productCategoryTypeId", "BRAND_CATEGORY")
-                    .queryFirst();
-
-            GenericValue childCategory = EntityQuery.use(delegator)
-                    .from("ProductCategory")
-                    .where("categoryName", subBrandAAIAID, "productCategoryTypeId", "SUBBRAND_CATEGORY")
-                    .queryFirst();
-
-            if (UtilValidate.isEmpty(parentCategory) || UtilValidate.isEmpty(childCategory)) {
-                Debug.logError("Either parent (brand) or child (sub-brand) category not found!", MODULE);
-                return;
-            }
-
-            Debug.logInfo("-----"+ parentCategory + "---------" + childCategory,MODULE);
-
-            String parentCategoryId = parentCategory.getString("productCategoryId");
-            String childCategoryId = childCategory.getString("productCategoryId");
-
-            GenericValue existingRollup = EntityQuery.use(delegator)
-                    .from("ProductCategoryRollup")
-                    .where("productCategoryId", childCategoryId, "parentProductCategoryId", parentCategoryId)
-                    .queryFirst();
-
-            if (existingRollup != null) {
-                Debug.logInfo("ProductCategoryRollup already exists for SubBrand", MODULE);
-                return;
-            }
-
-            Map<String, Object> rollupParams = UtilMisc.toMap(
-                    "productCategoryId", childCategoryId,
-                    "parentProductCategoryId", parentCategoryId,
-                    "fromDate", UtilDateTime.nowTimestamp(),
-                    "userLogin", userLogin
-            );
-
-            Map<String, Object> result = dctx.getDispatcher().runSync("createProductCategoryRollup", rollupParams);
-
-            if (ServiceUtil.isSuccess(result)) {
-                Debug.logInfo("ProductCategoryRollup created successfully: " + childCategoryId + " -> " + parentCategoryId, MODULE);
-            } else {
-                Debug.logError("Error creating ProductCategoryRollup: " + result.get("errorMessage"), MODULE);
-            }
-
-        } catch (GenericEntityException | GenericServiceException e) {
-            Debug.logError(e, "Exception while creating ProductCategoryRollup", MODULE);
-        }
-    }
-
     private static void createItemLevelGTIN(DispatchContext dctx, String partNumber, String itemLevelGTIN, GenericValue userLogin) {
         try {
             GenericValue existingGTIN = null;
@@ -850,6 +802,36 @@ public class XmlParsing {
         }
     }
 
+    public static void createProductCategoryRollup(DispatchContext dctx, String brandAAIAID, String subBrandAAIAID, GenericValue userLogin) {
+        Delegator delegator = dctx.getDelegator();
+
+        try {
+            GenericValue existingRollup = EntityQuery.use(delegator)
+                    .from("ProductCategoryRollup")
+                    .where("productCategoryId", subBrandAAIAID, "parentProductCategoryId", brandAAIAID)
+                    .queryFirst();
+
+            if (existingRollup != null) {
+                Debug.logInfo("ProductCategoryRollup already exists for SubBrand: " + subBrandAAIAID + "," + brandAAIAID, MODULE);
+                return;
+            }
+
+            GenericValue newRollup = delegator.makeValue("ProductCategoryRollup");
+            newRollup.set("productCategoryId", subBrandAAIAID);
+            newRollup.set("parentProductCategoryId", brandAAIAID);
+            newRollup.set("fromDate", UtilDateTime.nowTimestamp());
+
+            delegator.create(newRollup);
+
+            Debug.logInfo("ProductCategoryRollup created successfully: " + subBrandAAIAID + " -> " + brandAAIAID, MODULE);
+
+        } catch (GenericEntityException e) {
+            Debug.logError(e, "Entity error while creating ProductCategoryRollup", MODULE);
+        } catch (Exception e) {
+            Debug.logError(e, "Unexpected error while creating ProductCategoryRollup", MODULE);
+        }
+    }
+
     private static void createDescription(DispatchContext dctx, String descriptionCode, String languageCode, String finalText, GenericValue userLogin) {
         Delegator delegator = dctx.getDelegator();
         String contentId = delegator.getNextSeqId("Content");
@@ -903,28 +885,6 @@ public class XmlParsing {
         }
     }
 
-    //helper method to create productContent
-//    private static void createProductContent(DispatchContext dctx, String productId, String contentId, GenericValue userLogin) {
-//        try {
-//            Map<String, Object> productContentParams = UtilMisc.toMap(
-//                    "productId", productId,
-//                    "contentId", contentId,
-//                    "productContentTypeId", "DESCRIPTION",
-//                    "fromDate", UtilDateTime.nowTimestamp(),
-//                    "userLogin", userLogin
-//            );
-//
-//            Map<String, Object> result = dctx.getDispatcher().runSync("createProductContent", productContentParams);
-//
-//            if (ServiceUtil.isSuccess(result)) {
-//                Debug.logInfo("ProductContent created for product: " + productId + ", content: " + contentId, MODULE);
-//            } else {
-//                Debug.logError("Error creating ProductContent: " + result.get("errorMessage"), MODULE);
-//            }
-//        } catch (GenericServiceException e) {
-//            Debug.logError("Exception creating ProductContent: " + e.getMessage(), MODULE);
-//        }
-//    }
 
     public static void storeExtendedProductInformation(DispatchContext dctx, String expiCode, String finalExtendedProductInformationText, GenericValue userLogin) {
 

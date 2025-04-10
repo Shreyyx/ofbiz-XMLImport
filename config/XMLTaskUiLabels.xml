@@ -21,4 +21,19 @@ under the License.
 <!-- Keep only English language here because of OFBIZ-13095 -->
 
 <resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/ofbiz-properties.xsd">
+    <property key="XMLTask">
+        <value xml:lang="en">XML Application</value>
+    </property>
+    <property key="XmlTaskCompanyName">
+        <value xml:lang="en">OFBiz: XML Task</value>
+    </property>
+    <property key="XmlTaskCompanySubtitle">
+        <value xml:lang="en">Part of the Apache OFBiz Family of Open Source Software</value>
+    </property>
+    <property key="ProductId">
+        <value xml:lang="en">Product ID</value>
+    </property>
+    <property key="XmlTaskViewPermissionError">
+        <value xml:lang="en">You are not allowed to view this page.</value>
+    </property>
 </resource>
