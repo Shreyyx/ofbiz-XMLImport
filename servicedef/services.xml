@@ -37,21 +37,4 @@ under the License.
         <attribute name="itemCount" type="Integer" mode="OUT"/>
         <attribute name="itemsList" type="List" mode="OUT"/>
     </service>
-    <service name="createDataResourceAttributes"
-             engine="java"
-             location="com.companyname.ofbizdemo.services.DataResourceAttributeService"
-             invoke="createDataResourceAttributes"
-             auth="true"
-             require-new-transaction="true">
-        <attribute name="dataResourceId" type="String" mode="OUT" optional="false"/>
-        <attribute name="assetType" type="String" mode="IN" optional="true"/>
-        <attribute name="representation" type="String" mode="IN" optional="true"/>
-        <attribute name="background" type="String" mode="IN" optional="true"/>
-        <attribute name="orientationView" type="String" mode="IN" optional="true"/>
-        <attribute name="assetHeight" type="String" mode="IN" optional="true"/>
-        <attribute name="assetWidth" type="String" mode="IN" optional="true"/>
-        <attribute name="uri" type="String" mode="IN" optional="true"/>
-        <attribute name="userLogin" type="GenericValue" mode="IN" optional="false"/>
-    </service>
-
 </services>
