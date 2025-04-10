@@ -1,20 +1,1189 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <PIES xsi:schemaLocation="" xmlns="http://www.autocare.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-<entity-engine-xml>
-<Items>
-        <Item MaintenanceType="A"> //this indicates that their is a new product that needs to be added
-            <ItemLevelGTIN GTINQualifier="UP">00028882030595</ItemLevelGTIN> //GoodIdentification: GoodIdentificationTypeId: UPCA , IdValue:00028882030595
-            <PartNumber>899774</PartNumber> //Product: ProductId	
-            <BrandAAIAID>FBVS</BrandAAIAID> //productCategory
-            <BrandLabel>Parts Master</BrandLabel> //Product: Brand Name or productCategory : categoryName
-<!--            <SubBrandAAIAID>GMRG</SubBrandAAIAID> //productCategory following the heirarchy-->
-<!--            <SubBrandLabel>by Valvoline</SubBrandLabel> //productCategory : categoryName-->
-<!--            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize> //Product: QuantityUomId, PiecesIncluded-->
-<!--            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication> //Product: QuantityIncluded-->
-<!--            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity> //Product: OrderDecimalQuantity-->
-<!--            <PartTerminologyID>57314</PartTerminologyID> //ProductCategory: ProductCategoryId-->
+    <Items>
+        <Item MaintenanceType="A">
+            <ItemLevelGTIN GTINQualifier="UP">00028882030595</ItemLevelGTIN>
+            <PartNumber>899774</PartNumber>
+            <BrandAAIAID>FBVS</BrandAAIAID>
+            <BrandLabel>Parts Master</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+            <PartTerminologyID>57314</PartTerminologyID>
+            <Descriptions>
+                <Description MaintenanceType="A" DescriptionCode="MKT" LanguageCode="EN">Formulated with full-synthetic, premium base oils, long-life friction modifiers, unique anti-wear additives and shear stable viscosity modifiers that help prevent oil film breakdown. Recommended for use in the following CVT applications: Audi and VW (TL 52180 G 052 180), Ford (CVT30/Mercon C), Subaru (Lineartronic CVTF), Honda (HMMF), Nissan (NS-2), Mitsubishi (CVTF-J1/SP-III), BMW Mini Cooper EZL 799), Hyundai and Kia (SP-III), Suzuki (TC/NS-2/CVT Green1), Dodge, Jeep (NS-2/CVTF+4), GM Saturn (DEX-CVT), Ford (CVT23), and Mercedes Benz (236.20).</Description>
+                <Description MaintenanceType="A" DescriptionCode="EXT" LanguageCode="EN">CVT ATF 1 QT</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="1">Formulated with full-synthetic base stocks and advanced additive technology to meet the challenging demands of CVT transmissions</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="2">Enhanced anti-shudder protection for maximum power transfer</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="3">Developed with anti-wear technology to help improve transmission durability</Description>
+                <Description MaintenanceType="A" DescriptionCode="KSW" LanguageCode="EN">Parts Master, CVT, ATF, 1 QT</Description>
+                <Description MaintenanceType="A" DescriptionCode="SHO" LanguageCode="EN">CVT ATF 1 QT</Description>
+                <Description MaintenanceType="A" DescriptionCode="DES" LanguageCode="EN">Parts Master CVT ATF 1 QT</Description>
+            </Descriptions>
+            <ExtendedInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="HTS" LanguageCode="EN">2710193040</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="CTO" LanguageCode="EN">US</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PRC" LanguageCode="EN">NEW</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLC" LanguageCode="EN">12</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLM" LanguageCode="EN">7</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="EMS" LanguageCode="EN">1</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIF">0</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIS">Proposed</ExtendedProductInformation>
+            </ExtendedInformation>
+            <ProductAttributes>
+                <ProductAttribute MaintenanceType="A" AttributeID="Standards" PADBAttribute="N">CVT applications</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. F" PADBAttribute="N">-44</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. C" PADBAttribute="N">greater than 104</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. F" PADBAttribute="N">greater than 219</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. C" PADBAttribute="N">-42</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flammable" PADBAttribute="N">No</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Type Included" PADBAttribute="N">Automatic Transmission</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Size" PADBAttribute="N">1.0 Quart</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Gallon" PADBAttribute="N">1</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Recommneded Automative Application" PADBAttribute="N">CVT fluid.</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Composition" PADBAttribute="N">Full Synthetic</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Transmission fluid Type" PADBAttribute="N">CVT</ProductAttribute>
+            </ProductAttributes>
+            <Packages>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00028882030595</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>028882030595</PackageBarCodeCharacters>
+                </Package>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00028882030588</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>028882030588</PackageBarCodeCharacters>
+                </Package>
+            </Packages>
+            <PartInterchangeInfo>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BLGS" BrandLabel="1-800-Radiator" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">M299</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BLGS" BrandLabel="1-800-Radiator" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">M-299</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BCVC" BrandLabel="ACDelco Professional" SubBrandAAIAID="FBRK" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">1550842</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BCVC" BrandLabel="ACDelco Professional" SubBrandAAIAID="FBRK" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">15-50842</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BPWP" BrandLabel="Austin Baker Industries" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">11708791</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BPWP" BrandLabel="Austin Baker Industries" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">11708792</PartNumber>
+                </PartInterchange>
+            </PartInterchangeInfo>
+            <Prices>
+                <Pricing MaintenanceType="A" PriceType="LST">
+                    <PriceSheetNumber>432-0900</PriceSheetNumber>
+                    <CurrencyCode>USD</CurrencyCode>
+                    <Price UOM="PE">410.63</Price>
+                </Pricing>
+                <Pricing MaintenanceType="A" PriceType="ZZ1">
+                    <PriceSheetNumber>432-0900</PriceSheetNumber>
+                    <CurrencyCode>USD</CurrencyCode>
+                    <Price UOM="PE">114.56</Price>
+                </Pricing>
+                <Pricing MaintenanceType="A" PriceType="DLN">
+                    <PriceSheetNumber>432-0900</PriceSheetNumber>
+                    <CurrencyCode>USD</CurrencyCode>
+                    <Price UOM="PE">293.32</Price>
+                </Pricing>
+                <Pricing MaintenanceType="A" PriceType="DLR">
+                    <PriceSheetNumber>432-0900</PriceSheetNumber>
+                    <CurrencyCode>USD</CurrencyCode>
+                    <Price UOM="PE">252.62</Price>
+                </Pricing>
+            </Prices>
+            <DigitalAssets>
+                <DigitalFileInformation MaintenanceType="A" LanguageCode="EN">
+                    <FileName>899774_Front.jpg</FileName>
+                    <AssetType>P04</AssetType>
+                    <FileType>JPG</FileType>
+                </DigitalFileInformation>
+                <DigitalFileInformation MaintenanceType="A" LanguageCode="EN">
+                    <FileName>899774_Back.jpg</FileName>
+                    <AssetType>P01</AssetType>
+                    <FileType>JPG</FileType>
+                </DigitalFileInformation>
+            </DigitalAssets>
+        </Item>
+        <Item MaintenanceType="A">
+            <ItemLevelGTIN GTINQualifier="UP">00074130002425</ItemLevelGTIN>
+            <PartNumber>596201</PartNumber>
+            <BrandAAIAID>FBVS</BrandAAIAID>
+            <BrandLabel>Parts Master</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+            <PartTerminologyID>11387</PartTerminologyID>
+            <Descriptions>
+                <Description MaintenanceType="A" DescriptionCode="SHO" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="KSW" LanguageCode="EN">ATF, automatic transmission fluid, ATF+4, chrysler, dodge, jeep</Description>
+                <Description MaintenanceType="A" DescriptionCode="DES" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="2">Replaces ATF+3®</Description>
+                <Description MaintenanceType="A" DescriptionCode="EXT" LanguageCode="EN">ATF+4™ Automatic Transmission Fluid</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="3">Excellent low &amp; high temperature performance  controls friction &amp; provides smooth shift performance</Description>
+                <Description MaintenanceType="A" DescriptionCode="MKT" LanguageCode="EN">ATF+4® is a high-quality synthetic transmission fluid specifically engineered to protect and prolong the life of Chrysler automatic transmissions.</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="1">Officially licensed &amp; Chrysler approved</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="4">Superior anti-wear &amp; anti-oxidation properties  contains additive to reduce foaming</Description>
+            </Descriptions>
+            <ExtendedInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PRC" LanguageCode="EN">NEW</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="EMS" LanguageCode="EN">1</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="HTS" LanguageCode="EN">2710193040</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLC" LanguageCode="EN">12</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLM" LanguageCode="EN">7</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="CTO" LanguageCode="EN">US</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIF">2</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIS">Available to Order</ExtendedProductInformation>
+            </ExtendedInformation>
+            <ProductAttributes>
+                <ProductAttribute MaintenanceType="A" AttributeID="Standards" PADBAttribute="N">A full synthetic ATF approved and licensed under the Chrysler ATF+4® specification.</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. F" PADBAttribute="N">-54</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. C" PADBAttribute="N">greater than 199</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. F" PADBAttribute="N">greater than 390</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. C" PADBAttribute="N">-48</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Type" PADBAttribute="N">Bottle</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Type Included" PADBAttribute="N">Automatic Transmission</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Size" PADBAttribute="N">1.0 Quart</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Gallon" PADBAttribute="N">3</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Regulated" PADBAttribute="N">No</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Recommneded Automative Application" PADBAttribute="N">ATF+F automatic transmissions</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Composition" PADBAttribute="N">Synthetic</ProductAttribute>
+            </ProductAttributes>
+            <Packages>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002425</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002425</PackageBarCodeCharacters>
+                    <PackageUOM>EA</PackageUOM>
+                    <QuantityofEaches>1</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">1.0</InnerQuantity>
+                </Package>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002401</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002401</PackageBarCodeCharacters>
+                    <PackageUOM>CA</PackageUOM>
+                    <QuantityofEaches>12</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">12.0</InnerQuantity>
+                </Package>
+            </Packages>
+            <PartInterchangeInfo>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BLGS" BrandLabel="1-800-Radiator" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="HGGH" BrandLabel="Agility Autoparts" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="DMRD" BrandLabel="APDI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="FHHC" BrandLabel="DENSO" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">221-9367</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CDVX" BrandLabel="DPI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CNWR" BrandLabel="Ford" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">F75Z8005 MA</PartNumber>
+                </PartInterchange>
+            </PartInterchangeInfo>
+            <DigitalAssets>
+                <DigitalFileInformation MaintenanceType="A" LanguageCode="EN">
+                    <FileName>US_596201_PM_ATF_plus4.</FileName>
+                    <AssetType>P04</AssetType>
+                </DigitalFileInformation>
+            </DigitalAssets>
+        </Item>
+        <Item MaintenanceType="A">
+            <ItemLevelGTIN GTINQualifier="UP">00028882030595</ItemLevelGTIN>
+            <PartNumber>12345</PartNumber>
+            <BrandAAIAID>FBVS</BrandAAIAID>
+            <BrandLabel>Parts Master</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+            <PartTerminologyID>57314</PartTerminologyID>
+            <Descriptions>
+                <Description MaintenanceType="A" DescriptionCode="MKT" LanguageCode="EN">Formulated with full-synthetic, premium base oils, long-life friction modifiers, unique anti-wear additives and shear stable viscosity modifiers that help prevent oil film breakdown. Recommended for use in the following CVT applications: Audi and VW (TL 52180 G 052 180), Ford (CVT30/Mercon C), Subaru (Lineartronic CVTF), Honda (HMMF), Nissan (NS-2), Mitsubishi (CVTF-J1/SP-III), BMW Mini Cooper EZL 799), Hyundai and Kia (SP-III), Suzuki (TC/NS-2/CVT Green1), Dodge, Jeep (NS-2/CVTF+4), GM Saturn (DEX-CVT), Ford (CVT23), and Mercedes Benz (236.20).</Description>
+                <Description MaintenanceType="A" DescriptionCode="EXT" LanguageCode="EN">CVT ATF 1 QT</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="1">Formulated with full-synthetic base stocks and advanced additive technology to meet the challenging demands of CVT transmissions</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="2">Enhanced anti-shudder protection for maximum power transfer</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="3">Developed with anti-wear technology to help improve transmission durability</Description>
+                <Description MaintenanceType="A" DescriptionCode="KSW" LanguageCode="EN">Parts Master, CVT, ATF, 1 QT</Description>
+                <Description MaintenanceType="A" DescriptionCode="SHO" LanguageCode="EN">CVT ATF 1 QT</Description>
+                <Description MaintenanceType="A" DescriptionCode="DES" LanguageCode="EN">Parts Master CVT ATF 1 QT</Description>
+            </Descriptions>
+            <ExtendedInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="HTS" LanguageCode="EN">2710193040</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="CTO" LanguageCode="EN">US</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PRC" LanguageCode="EN">NEW</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLC" LanguageCode="EN">12</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLM" LanguageCode="EN">7</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="EMS" LanguageCode="EN">1</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIF">0</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIS">Proposed</ExtendedProductInformation>
+            </ExtendedInformation>
+            <ProductAttributes>
+                <ProductAttribute MaintenanceType="A" AttributeID="Standards" PADBAttribute="N">CVT applications</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. F" PADBAttribute="N">-44</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. C" PADBAttribute="N">greater than 104</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. F" PADBAttribute="N">greater than 219</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. C" PADBAttribute="N">-42</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flammable" PADBAttribute="N">No</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Type Included" PADBAttribute="N">Automatic Transmission</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Size" PADBAttribute="N">1.0 Quart</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Gallon" PADBAttribute="N">1</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Recommneded Automative Application" PADBAttribute="N">CVT fluid.</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Composition" PADBAttribute="N">Full Synthetic</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Transmission fluid Type" PADBAttribute="N">CVT</ProductAttribute>
+            </ProductAttributes>
+            <Packages>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00028882030595</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>028882030595</PackageBarCodeCharacters>
+                </Package>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00028882030588</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>028882030588</PackageBarCodeCharacters>
+                </Package>
+            </Packages>
+        </Item>
+        <Item>
+            <ItemLevelGTIN GTINQualifier="UP">12345678928882</ItemLevelGTIN>
+            <PartNumber>384734</PartNumber>
+            <BrandAAIAID>FLVT</BrandAAIAID>
+            <BrandLabel>Shreya</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <PartTerminologyID>12345</PartTerminologyID>
+        </Item>
+        <Item MaintenanceType="A">
+            <ItemLevelGTIN GTINQualifier="UP">00028882030595</ItemLevelGTIN>
+            <PartNumber>784346</PartNumber>
+            <BrandAAIAID>FBVS</BrandAAIAID>
+            <BrandLabel>Parts Master</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+            <PartTerminologyID>57314</PartTerminologyID>
+            <Descriptions>
+                <Description MaintenanceType="A" DescriptionCode="MKT" LanguageCode="EN">Formulated with full-synthetic, premium base oils, long-life friction modifiers, unique anti-wear additives and shear stable viscosity modifiers that help prevent oil film breakdown. Recommended for use in the following CVT applications: Audi and VW (TL 52180 G 052 180), Ford (CVT30/Mercon C), Subaru (Lineartronic CVTF), Honda (HMMF), Nissan (NS-2), Mitsubishi (CVTF-J1/SP-III), BMW Mini Cooper EZL 799), Hyundai and Kia (SP-III), Suzuki (TC/NS-2/CVT Green1), Dodge, Jeep (NS-2/CVTF+4), GM Saturn (DEX-CVT), Ford (CVT23), and Mercedes Benz (236.20).</Description>
+                <Description MaintenanceType="A" DescriptionCode="EXT" LanguageCode="EN">CVT ATF 1 QT</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="1">Formulated with full-synthetic base stocks and advanced additive technology to meet the challenging demands of CVT transmissions</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="2">Enhanced anti-shudder protection for maximum power transfer</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="3">Developed with anti-wear technology to help improve transmission durability</Description>
+                <Description MaintenanceType="A" DescriptionCode="KSW" LanguageCode="EN">Parts Master, CVT, ATF, 1 QT</Description>
+                <Description MaintenanceType="A" DescriptionCode="SHO" LanguageCode="EN">CVT ATF 1 QT</Description>
+                <Description MaintenanceType="A" DescriptionCode="DES" LanguageCode="EN">Parts Master CVT ATF 1 QT</Description>
+            </Descriptions>
+        </Item>
+        <Item>
+            <ItemLevelGTIN GTINQualifier="UP">12345678928882</ItemLevelGTIN>
+            <PartNumber>001342</PartNumber>
+            <BrandAAIAID>FLVT</BrandAAIAID>
+            <BrandLabel>Shreya</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <PartTerminologyID>12345</PartTerminologyID>
+        </Item>
+        <Item MaintenanceType="A">
+            <ItemLevelGTIN GTINQualifier="UP">00028882030595</ItemLevelGTIN>
+            <PartNumber>899774</PartNumber>
+            <BrandAAIAID>FBVS</BrandAAIAID>
+            <BrandLabel>Parts Master</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+            <PartTerminologyID>57314</PartTerminologyID>
+        <Descriptions>
+            <Description MaintenanceType="A" DescriptionCode="MKT" LanguageCode="EN">Formulated with full-synthetic, premium base oils, long-life friction modifiers, unique anti-wear additives and shear stable viscosity modifiers that help prevent oil film breakdown. Recommended for use in the following CVT applications: Audi and VW (TL 52180 G 052 180), Ford (CVT30/Mercon C), Subaru (Lineartronic CVTF), Honda (HMMF), Nissan (NS-2), Mitsubishi (CVTF-J1/SP-III), BMW Mini Cooper EZL 799), Hyundai and Kia (SP-III), Suzuki (TC/NS-2/CVT Green1), Dodge, Jeep (NS-2/CVTF+4), GM Saturn (DEX-CVT), Ford (CVT23), and Mercedes Benz (236.20).</Description>
+            <Description MaintenanceType="A" DescriptionCode="EXT" LanguageCode="EN">CVT ATF 1 QT</Description>
+            <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="1">Formulated with full-synthetic base stocks and advanced additive technology to meet the challenging demands of CVT transmissions</Description>
+            <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="2">Enhanced anti-shudder protection for maximum power transfer</Description>
+            <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="3">Developed with anti-wear technology to help improve transmission durability</Description>
+            <Description MaintenanceType="A" DescriptionCode="KSW" LanguageCode="EN">Parts Master, CVT, ATF, 1 QT</Description>
+            <Description MaintenanceType="A" DescriptionCode="SHO" LanguageCode="EN">CVT ATF 1 QT</Description>
+            <Description MaintenanceType="A" DescriptionCode="DES" LanguageCode="EN">Parts Master CVT ATF 1 QT</Description>
+        </Descriptions>
+        <ExtendedInformation>
+            <ExtendedProductInformation MaintenanceType="A" EXPICode="HTS" LanguageCode="EN">2710193040</ExtendedProductInformation>
+            <ExtendedProductInformation MaintenanceType="A" EXPICode="CTO" LanguageCode="EN">US</ExtendedProductInformation>
+            <ExtendedProductInformation MaintenanceType="A" EXPICode="PRC" LanguageCode="EN">NEW</ExtendedProductInformation>
+            <ExtendedProductInformation MaintenanceType="A" EXPICode="PLC" LanguageCode="EN">12</ExtendedProductInformation>
+            <ExtendedProductInformation MaintenanceType="A" EXPICode="PLM" LanguageCode="EN">7</ExtendedProductInformation>
+            <ExtendedProductInformation MaintenanceType="A" EXPICode="EMS" LanguageCode="EN">1</ExtendedProductInformation>
+            <ExtendedProductInformation MaintenanceType="A" EXPICode="LIF">0</ExtendedProductInformation>
+            <ExtendedProductInformation MaintenanceType="A" EXPICode="LIS">Proposed</ExtendedProductInformation>
+        </ExtendedInformation>
+        <ProductAttributes>
+            <ProductAttribute MaintenanceType="A" AttributeID="Standards" PADBAttribute="N">CVT applications</ProductAttribute>
+            <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. F" PADBAttribute="N">-44</ProductAttribute>
+            <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. C" PADBAttribute="N">greater than 104</ProductAttribute>
+            <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. F" PADBAttribute="N">greater than 219</ProductAttribute>
+            <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. C" PADBAttribute="N">-42</ProductAttribute>
+            <ProductAttribute MaintenanceType="A" AttributeID="Flammable" PADBAttribute="N">No</ProductAttribute>
+            <ProductAttribute MaintenanceType="A" AttributeID="Oil Type Included" PADBAttribute="N">Automatic Transmission</ProductAttribute>
+            <ProductAttribute MaintenanceType="A" AttributeID="Container Size" PADBAttribute="N">1.0 Quart</ProductAttribute>
+            <ProductAttribute MaintenanceType="A" AttributeID="Oil Gallon" PADBAttribute="N">1</ProductAttribute>
+            <ProductAttribute MaintenanceType="A" AttributeID="Recommneded Automative Application" PADBAttribute="N">CVT fluid.</ProductAttribute>
+            <ProductAttribute MaintenanceType="A" AttributeID="Oil Composition" PADBAttribute="N">Full Synthetic</ProductAttribute>
+            <ProductAttribute MaintenanceType="A" AttributeID="Transmission fluid Type" PADBAttribute="N">CVT</ProductAttribute>
+        </ProductAttributes>
+        <Packages>
+            <Package MaintenanceType="A">
+                <PackageLevelGTIN>00028882030595</PackageLevelGTIN>
+                <PackageBarCodeCharacters>028882030595</PackageBarCodeCharacters>
+            </Package>
+            <Package MaintenanceType="A">
+                <PackageLevelGTIN>00028882030588</PackageLevelGTIN>
+                <PackageBarCodeCharacters>028882030588</PackageBarCodeCharacters>
+            </Package>
+        </Packages>
+        </Item>
+            <Item>
+                <ItemLevelGTIN GTINQualifier="UP">12345678928882</ItemLevelGTIN>
+                <PartNumber>384734</PartNumber>
+                <BrandAAIAID>FLVT</BrandAAIAID>
+                <BrandLabel>Shreya</BrandLabel>
+                <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+                <SubBrandLabel>by Valvoline</SubBrandLabel>
+                <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+                <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+                <PartTerminologyID>12345</PartTerminologyID>
             </Item>
-</Items>
-</entity-engine-xml>
-
-
+            <Item MaintenanceType="A">
+                <ItemLevelGTIN GTINQualifier="UP">00028882030595</ItemLevelGTIN>
+                <PartNumber>88481</PartNumber>
+                <BrandAAIAID>FBVS</BrandAAIAID>
+                <BrandLabel>Parts Master</BrandLabel>
+                <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+                <SubBrandLabel>by Valvoline</SubBrandLabel>
+                <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+                <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+                <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+                <PartTerminologyID>57314</PartTerminologyID>
+                <Descriptions>
+                    <Description MaintenanceType="A" DescriptionCode="MKT" LanguageCode="EN">Formulated with full-synthetic, premium base oils, long-life friction modifiers, unique anti-wear additives and shear stable viscosity modifiers that help prevent oil film breakdown. Recommended for use in the following CVT applications: Audi and VW (TL 52180 G 052 180), Ford (CVT30/Mercon C), Subaru (Lineartronic CVTF), Honda (HMMF), Nissan (NS-2), Mitsubishi (CVTF-J1/SP-III), BMW Mini Cooper EZL 799), Hyundai and Kia (SP-III), Suzuki (TC/NS-2/CVT Green1), Dodge, Jeep (NS-2/CVTF+4), GM Saturn (DEX-CVT), Ford (CVT23), and Mercedes Benz (236.20).</Description>
+                    <Description MaintenanceType="A" DescriptionCode="EXT" LanguageCode="EN">CVT ATF 1 QT</Description>
+                    <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="1">Formulated with full-synthetic base stocks and advanced additive technology to meet the challenging demands of CVT transmissions</Description>
+                    <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="2">Enhanced anti-shudder protection for maximum power transfer</Description>
+                    <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="3">Developed with anti-wear technology to help improve transmission durability</Description>
+                    <Description MaintenanceType="A" DescriptionCode="KSW" LanguageCode="EN">Parts Master, CVT, ATF, 1 QT</Description>
+                    <Description MaintenanceType="A" DescriptionCode="SHO" LanguageCode="EN">CVT ATF 1 QT</Description>
+                    <Description MaintenanceType="A" DescriptionCode="DES" LanguageCode="EN">Parts Master CVT ATF 1 QT</Description>
+                </Descriptions>
+            </Item>
+            <Item MaintenanceType="A">
+                <ItemLevelGTIN GTINQualifier="UP">00028882030595</ItemLevelGTIN>
+                <PartNumber>958473</PartNumber>
+                <BrandAAIAID>FBVS</BrandAAIAID>
+                <BrandLabel>Parts Master</BrandLabel>
+                <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+                <SubBrandLabel>by Valvoline</SubBrandLabel>
+                <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+                <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+                <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+                <PartTerminologyID>57314</PartTerminologyID>
+                <DigitalAssets>
+                    <DigitalFileInformation MaintenanceType="A" LanguageCode="EN">
+                        <FileName>899774_Front.jpg</FileName>
+                        <AssetType>P04</AssetType>
+                        <FileType>JPG</FileType>
+                        <Representation>A</Representation>
+                        <Background>WHI</Background>
+                        <OrientationView>FRO</OrientationView>
+                        <AssetDimensions UOM="PX">
+                            <AssetHeight>1500</AssetHeight>
+                            <AssetWidth>1500</AssetWidth>
+                        </AssetDimensions>
+                    </DigitalFileInformation>
+                    <DigitalFileInformation MaintenanceType="A" LanguageCode="EN">
+                        <FileName>899774_Back.jpg</FileName>
+                        <AssetType>P01</AssetType>
+                        <FileType>JPG</FileType>
+                        <Representation>A</Representation>
+                        <Background>WHI</Background>
+                        <OrientationView>BAC</OrientationView>
+                        <AssetDimensions UOM="PX">
+                            <AssetHeight>1500</AssetHeight>
+                            <AssetWidth>1500</AssetWidth>
+                        </AssetDimensions>
+                    </DigitalFileInformation>
+                </DigitalAssets>
+            </Item>
+            <Item MaintenanceType="A">
+                <ItemLevelGTIN GTINQualifier="UP">00028882030595</ItemLevelGTIN>
+                <PartNumber>789654</PartNumber>
+                <BrandAAIAID>FBVS</BrandAAIAID>
+                <BrandLabel>Parts Master</BrandLabel>
+                <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+                <SubBrandLabel>by Valvoline</SubBrandLabel>
+                <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+                <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+                <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+                <PartTerminologyID>57314</PartTerminologyID>
+            </Item>
+        </Item>
+        <Item MaintenanceType="A">
+            <ItemLevelGTIN GTINQualifier="UP">00028882030595</ItemLevelGTIN>
+            <PartNumber>453249</PartNumber>
+            <BrandAAIAID>FBVS</BrandAAIAID>
+            <BrandLabel>Parts Master</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+            <PartTerminologyID>57314</PartTerminologyID>
+        </Item>
+        <Item MaintenanceType="A">
+            <ItemLevelGTIN GTINQualifier="UP">00028882030595</ItemLevelGTIN>
+            <PartNumber>737440</PartNumber>
+            <BrandAAIAID>FBVS</BrandAAIAID>
+            <BrandLabel>Parts Master</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+            <PartTerminologyID>57314</PartTerminologyID>
+            <Descriptions>
+                <Description MaintenanceType="A" DescriptionCode="MKT" LanguageCode="EN">Formulated with full-synthetic, premium base oils, long-life friction modifiers, unique anti-wear additives and shear stable viscosity modifiers that help prevent oil film breakdown. Recommended for use in the following CVT applications: Audi and VW (TL 52180 G 052 180), Ford (CVT30/Mercon C), Subaru (Lineartronic CVTF), Honda (HMMF), Nissan (NS-2), Mitsubishi (CVTF-J1/SP-III), BMW Mini Cooper EZL 799), Hyundai and Kia (SP-III), Suzuki (TC/NS-2/CVT Green1), Dodge, Jeep (NS-2/CVTF+4), GM Saturn (DEX-CVT), Ford (CVT23), and Mercedes Benz (236.20).</Description>
+                <Description MaintenanceType="A" DescriptionCode="EXT" LanguageCode="EN">CVT ATF 1 QT</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="1">Formulated with full-synthetic base stocks and advanced additive technology to meet the challenging demands of CVT transmissions</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="2">Enhanced anti-shudder protection for maximum power transfer</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="3">Developed with anti-wear technology to help improve transmission durability</Description>
+                <Description MaintenanceType="A" DescriptionCode="KSW" LanguageCode="EN">Parts Master, CVT, ATF, 1 QT</Description>
+                <Description MaintenanceType="A" DescriptionCode="SHO" LanguageCode="EN">CVT ATF 1 QT</Description>
+                <Description MaintenanceType="A" DescriptionCode="DES" LanguageCode="EN">Parts Master CVT ATF 1 QT</Description>
+            </Descriptions>
+            <ExtendedInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="HTS" LanguageCode="EN">2710193040</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="CTO" LanguageCode="EN">US</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PRC" LanguageCode="EN">NEW</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLC" LanguageCode="EN">12</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLM" LanguageCode="EN">7</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="EMS" LanguageCode="EN">1</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIF">0</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIS">Proposed</ExtendedProductInformation>
+            </ExtendedInformation>
+            <ProductAttributes>
+                <ProductAttribute MaintenanceType="A" AttributeID="Standards" PADBAttribute="N">CVT applications</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. F" PADBAttribute="N">-44</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. C" PADBAttribute="N">greater than 104</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. F" PADBAttribute="N">greater than 219</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. C" PADBAttribute="N">-42</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flammable" PADBAttribute="N">No</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Type Included" PADBAttribute="N">Automatic Transmission</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Size" PADBAttribute="N">1.0 Quart</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Gallon" PADBAttribute="N">1</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Recommneded Automative Application" PADBAttribute="N">CVT fluid.</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Composition" PADBAttribute="N">Full Synthetic</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Transmission fluid Type" PADBAttribute="N">CVT</ProductAttribute>
+            </ProductAttributes>
+            <Packages>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00028882030595</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>028882030595</PackageBarCodeCharacters>
+                </Package>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00028882030588</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>028882030588</PackageBarCodeCharacters>
+                </Package>
+            </Packages>
+            <PartInterchangeInfo>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BLGS" BrandLabel="1-800-Radiator" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">M299</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BLGS" BrandLabel="1-800-Radiator" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">M-299</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BCVC" BrandLabel="ACDelco Professional" SubBrandAAIAID="FBRK" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">1550842</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BCVC" BrandLabel="ACDelco Professional" SubBrandAAIAID="FBRK" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">15-50842</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BPWP" BrandLabel="Austin Baker Industries" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">11708791</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BPWP" BrandLabel="Austin Baker Industries" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">11708792</PartNumber>
+                </PartInterchange>
+            </PartInterchangeInfo>
+            <Prices>
+                <Pricing MaintenanceType="A" PriceType="LST">
+                    <PriceSheetNumber>432-0900</PriceSheetNumber>
+                    <CurrencyCode>USD</CurrencyCode>
+                    <Price UOM="PE">410.63</Price>
+                </Pricing>
+                <Pricing MaintenanceType="A" PriceType="ZZ1">
+                    <PriceSheetNumber>432-0900</PriceSheetNumber>
+                    <CurrencyCode>USD</CurrencyCode>
+                    <Price UOM="PE">114.56</Price>
+                </Pricing>
+                <Pricing MaintenanceType="A" PriceType="DLN">
+                    <PriceSheetNumber>432-0900</PriceSheetNumber>
+                    <CurrencyCode>USD</CurrencyCode>
+                    <Price UOM="PE">293.32</Price>
+                </Pricing>
+                <Pricing MaintenanceType="A" PriceType="DLR">
+                    <PriceSheetNumber>432-0900</PriceSheetNumber>
+                    <CurrencyCode>USD</CurrencyCode>
+                    <Price UOM="PE">252.62</Price>
+                </Pricing>
+            </Prices>
+            <DigitalAssets>
+                <DigitalFileInformation MaintenanceType="A" LanguageCode="EN">
+                    <FileName>899774_Front.jpg</FileName>
+                    <AssetType>P04</AssetType>
+                    <FileType>JPG</FileType>
+                </DigitalFileInformation>
+                <DigitalFileInformation MaintenanceType="A" LanguageCode="EN">
+                    <FileName>899774_Back.jpg</FileName>
+                    <AssetType>P01</AssetType>
+                    <FileType>JPG</FileType>
+                </DigitalFileInformation>
+            </DigitalAssets>
+        </Item>
+        <Item MaintenanceType="A">
+            <ItemLevelGTIN GTINQualifier="UP">00074130002425</ItemLevelGTIN>
+            <PartNumber>034651</PartNumber>
+            <BrandAAIAID>FBVS</BrandAAIAID>
+            <BrandLabel>Parts Master</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+            <PartTerminologyID>11387</PartTerminologyID>
+            <Descriptions>
+                <Description MaintenanceType="A" DescriptionCode="SHO" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="KSW" LanguageCode="EN">ATF, automatic transmission fluid, ATF+4, chrysler, dodge, jeep</Description>
+                <Description MaintenanceType="A" DescriptionCode="DES" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="2">Replaces ATF+3®</Description>
+                <Description MaintenanceType="A" DescriptionCode="EXT" LanguageCode="EN">ATF+4™ Automatic Transmission Fluid</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="3">Excellent low &amp; high temperature performance  controls friction &amp; provides smooth shift performance</Description>
+                <Description MaintenanceType="A" DescriptionCode="MKT" LanguageCode="EN">ATF+4® is a high-quality synthetic transmission fluid specifically engineered to protect and prolong the life of Chrysler automatic transmissions.</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="1">Officially licensed &amp; Chrysler approved</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="4">Superior anti-wear &amp; anti-oxidation properties  contains additive to reduce foaming</Description>
+            </Descriptions>
+            <ExtendedInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PRC" LanguageCode="EN">NEW</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="EMS" LanguageCode="EN">1</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="HTS" LanguageCode="EN">2710193040</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLC" LanguageCode="EN">12</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLM" LanguageCode="EN">7</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="CTO" LanguageCode="EN">US</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIF">2</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIS">Available to Order</ExtendedProductInformation>
+            </ExtendedInformation>
+            <ProductAttributes>
+                <ProductAttribute MaintenanceType="A" AttributeID="Standards" PADBAttribute="N">A full synthetic ATF approved and licensed under the Chrysler ATF+4® specification.</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. F" PADBAttribute="N">-54</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. C" PADBAttribute="N">greater than 199</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. F" PADBAttribute="N">greater than 390</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. C" PADBAttribute="N">-48</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Type" PADBAttribute="N">Bottle</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Type Included" PADBAttribute="N">Automatic Transmission</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Size" PADBAttribute="N">1.0 Quart</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Gallon" PADBAttribute="N">3</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Regulated" PADBAttribute="N">No</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Recommneded Automative Application" PADBAttribute="N">ATF+F automatic transmissions</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Composition" PADBAttribute="N">Synthetic</ProductAttribute>
+            </ProductAttributes>
+            <Packages>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002425</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002425</PackageBarCodeCharacters>
+                    <PackageUOM>EA</PackageUOM>
+                    <QuantityofEaches>1</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">1.0</InnerQuantity>
+                </Package>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002401</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002401</PackageBarCodeCharacters>
+                    <PackageUOM>CA</PackageUOM>
+                    <QuantityofEaches>12</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">12.0</InnerQuantity>
+                </Package>
+            </Packages>
+            <PartInterchangeInfo>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BLGS" BrandLabel="1-800-Radiator" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="HGGH" BrandLabel="Agility Autoparts" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="DMRD" BrandLabel="APDI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="FHHC" BrandLabel="DENSO" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">221-9367</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CDVX" BrandLabel="DPI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CNWR" BrandLabel="Ford" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">F75Z8005 MA</PartNumber>
+                </PartInterchange>
+            </PartInterchangeInfo>
+            <DigitalAssets>
+                <DigitalFileInformation MaintenanceType="A" LanguageCode="EN">
+                    <FileName>US_596201_PM_ATF_plus4.</FileName>
+                    <AssetType>P04</AssetType>
+                </DigitalFileInformation>
+            </DigitalAssets>
+        </Item>
+        <Item MaintenanceType="A">
+            <ItemLevelGTIN GTINQualifier="UP">00074130002425</ItemLevelGTIN>
+            <PartNumber>596201</PartNumber>
+            <BrandAAIAID>FBVS</BrandAAIAID>
+            <BrandLabel>Parts Master</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+            <PartTerminologyID>11387</PartTerminologyID>
+            <Descriptions>
+                <Description MaintenanceType="A" DescriptionCode="SHO" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="KSW" LanguageCode="EN">ATF, automatic transmission fluid, ATF+4, chrysler, dodge, jeep</Description>
+                <Description MaintenanceType="A" DescriptionCode="DES" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="2">Replaces ATF+3®</Description>
+                <Description MaintenanceType="A" DescriptionCode="EXT" LanguageCode="EN">ATF+4™ Automatic Transmission Fluid</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="3">Excellent low &amp; high temperature performance  controls friction &amp; provides smooth shift performance</Description>
+                <Description MaintenanceType="A" DescriptionCode="MKT" LanguageCode="EN">ATF+4® is a high-quality synthetic transmission fluid specifically engineered to protect and prolong the life of Chrysler automatic transmissions.</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="1">Officially licensed &amp; Chrysler approved</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="4">Superior anti-wear &amp; anti-oxidation properties  contains additive to reduce foaming</Description>
+            </Descriptions>
+            <ExtendedInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PRC" LanguageCode="EN">NEW</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="EMS" LanguageCode="EN">1</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="HTS" LanguageCode="EN">2710193040</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLC" LanguageCode="EN">12</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLM" LanguageCode="EN">7</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="CTO" LanguageCode="EN">US</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIF">2</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIS">Available to Order</ExtendedProductInformation>
+            </ExtendedInformation>
+            <ProductAttributes>
+                <ProductAttribute MaintenanceType="A" AttributeID="Standards" PADBAttribute="N">A full synthetic ATF approved and licensed under the Chrysler ATF+4® specification.</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. F" PADBAttribute="N">-54</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. C" PADBAttribute="N">greater than 199</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. F" PADBAttribute="N">greater than 390</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. C" PADBAttribute="N">-48</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Type" PADBAttribute="N">Bottle</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Type Included" PADBAttribute="N">Automatic Transmission</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Size" PADBAttribute="N">1.0 Quart</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Gallon" PADBAttribute="N">3</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Regulated" PADBAttribute="N">No</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Recommneded Automative Application" PADBAttribute="N">ATF+F automatic transmissions</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Composition" PADBAttribute="N">Synthetic</ProductAttribute>
+            </ProductAttributes>
+            <Packages>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002425</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002425</PackageBarCodeCharacters>
+                    <PackageUOM>EA</PackageUOM>
+                    <QuantityofEaches>1</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">1.0</InnerQuantity>
+                </Package>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002401</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002401</PackageBarCodeCharacters>
+                    <PackageUOM>CA</PackageUOM>
+                    <QuantityofEaches>12</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">12.0</InnerQuantity>
+                </Package>
+            </Packages>
+            <PartInterchangeInfo>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BLGS" BrandLabel="1-800-Radiator" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="HGGH" BrandLabel="Agility Autoparts" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="DMRD" BrandLabel="APDI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="FHHC" BrandLabel="DENSO" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">221-9367</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CDVX" BrandLabel="DPI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CNWR" BrandLabel="Ford" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">F75Z8005 MA</PartNumber>
+                </PartInterchange>
+            </PartInterchangeInfo>
+            <DigitalAssets>
+                <DigitalFileInformation MaintenanceType="A" LanguageCode="EN">
+                    <FileName>US_596201_PM_ATF_plus4.</FileName>
+                    <AssetType>P04</AssetType>
+                </DigitalFileInformation>
+            </DigitalAssets>
+        </Item>
+        <Item MaintenanceType="A">
+            <ItemLevelGTIN GTINQualifier="UP">00074130002425</ItemLevelGTIN>
+            <PartNumber>620901</PartNumber>
+            <BrandAAIAID>FBVS</BrandAAIAID>
+            <BrandLabel>Parts Master</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+            <PartTerminologyID>11387</PartTerminologyID>
+            <Descriptions>
+                <Description MaintenanceType="A" DescriptionCode="SHO" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="KSW" LanguageCode="EN">ATF, automatic transmission fluid, ATF+4, chrysler, dodge, jeep</Description>
+                <Description MaintenanceType="A" DescriptionCode="DES" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="2">Replaces ATF+3®</Description>
+                <Description MaintenanceType="A" DescriptionCode="EXT" LanguageCode="EN">ATF+4™ Automatic Transmission Fluid</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="3">Excellent low &amp; high temperature performance  controls friction &amp; provides smooth shift performance</Description>
+                <Description MaintenanceType="A" DescriptionCode="MKT" LanguageCode="EN">ATF+4® is a high-quality synthetic transmission fluid specifically engineered to protect and prolong the life of Chrysler automatic transmissions.</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="1">Officially licensed &amp; Chrysler approved</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="4">Superior anti-wear &amp; anti-oxidation properties  contains additive to reduce foaming</Description>
+            </Descriptions>
+            <ExtendedInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PRC" LanguageCode="EN">NEW</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="EMS" LanguageCode="EN">1</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="HTS" LanguageCode="EN">2710193040</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLC" LanguageCode="EN">12</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLM" LanguageCode="EN">7</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="CTO" LanguageCode="EN">US</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIF">2</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIS">Available to Order</ExtendedProductInformation>
+            </ExtendedInformation>
+            <ProductAttributes>
+                <ProductAttribute MaintenanceType="A" AttributeID="Standards" PADBAttribute="N">A full synthetic ATF approved and licensed under the Chrysler ATF+4® specification.</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. F" PADBAttribute="N">-54</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. C" PADBAttribute="N">greater than 199</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. F" PADBAttribute="N">greater than 390</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. C" PADBAttribute="N">-48</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Type" PADBAttribute="N">Bottle</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Type Included" PADBAttribute="N">Automatic Transmission</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Size" PADBAttribute="N">1.0 Quart</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Gallon" PADBAttribute="N">3</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Regulated" PADBAttribute="N">No</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Recommneded Automative Application" PADBAttribute="N">ATF+F automatic transmissions</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Composition" PADBAttribute="N">Synthetic</ProductAttribute>
+            </ProductAttributes>
+            <Packages>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002425</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002425</PackageBarCodeCharacters>
+                    <PackageUOM>EA</PackageUOM>
+                    <QuantityofEaches>1</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">1.0</InnerQuantity>
+                </Package>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002401</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002401</PackageBarCodeCharacters>
+                    <PackageUOM>CA</PackageUOM>
+                    <QuantityofEaches>12</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">12.0</InnerQuantity>
+                </Package>
+            </Packages>
+            <PartInterchangeInfo>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BLGS" BrandLabel="1-800-Radiator" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="HGGH" BrandLabel="Agility Autoparts" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="DMRD" BrandLabel="APDI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="FHHC" BrandLabel="DENSO" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">221-9367</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CDVX" BrandLabel="DPI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CNWR" BrandLabel="Ford" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">F75Z8005 MA</PartNumber>
+                </PartInterchange>
+            </PartInterchangeInfo>
+            <DigitalAssets>
+                <DigitalFileInformation MaintenanceType="A" LanguageCode="EN">
+                    <FileName>US_596201_PM_ATF_plus4.</FileName>
+                    <AssetType>P04</AssetType>
+                </DigitalFileInformation>
+            </DigitalAssets>
+        </Item>
+        <Item MaintenanceType="A">
+            <ItemLevelGTIN GTINQualifier="UP">00074130002425</ItemLevelGTIN>
+            <PartNumber>591456</PartNumber>
+            <BrandAAIAID>FBVS</BrandAAIAID>
+            <BrandLabel>Parts Master</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+            <PartTerminologyID>11387</PartTerminologyID>
+            <Descriptions>
+                <Description MaintenanceType="A" DescriptionCode="SHO" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="KSW" LanguageCode="EN">ATF, automatic transmission fluid, ATF+4, chrysler, dodge, jeep</Description>
+                <Description MaintenanceType="A" DescriptionCode="DES" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="2">Replaces ATF+3®</Description>
+                <Description MaintenanceType="A" DescriptionCode="EXT" LanguageCode="EN">ATF+4™ Automatic Transmission Fluid</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="3">Excellent low &amp; high temperature performance  controls friction &amp; provides smooth shift performance</Description>
+                <Description MaintenanceType="A" DescriptionCode="MKT" LanguageCode="EN">ATF+4® is a high-quality synthetic transmission fluid specifically engineered to protect and prolong the life of Chrysler automatic transmissions.</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="1">Officially licensed &amp; Chrysler approved</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="4">Superior anti-wear &amp; anti-oxidation properties  contains additive to reduce foaming</Description>
+            </Descriptions>
+            <ExtendedInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PRC" LanguageCode="EN">NEW</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="EMS" LanguageCode="EN">1</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="HTS" LanguageCode="EN">2710193040</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLC" LanguageCode="EN">12</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLM" LanguageCode="EN">7</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="CTO" LanguageCode="EN">US</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIF">2</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIS">Available to Order</ExtendedProductInformation>
+            </ExtendedInformation>
+            <ProductAttributes>
+                <ProductAttribute MaintenanceType="A" AttributeID="Standards" PADBAttribute="N">A full synthetic ATF approved and licensed under the Chrysler ATF+4® specification.</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. F" PADBAttribute="N">-54</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. C" PADBAttribute="N">greater than 199</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. F" PADBAttribute="N">greater than 390</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. C" PADBAttribute="N">-48</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Type" PADBAttribute="N">Bottle</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Type Included" PADBAttribute="N">Automatic Transmission</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Size" PADBAttribute="N">1.0 Quart</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Gallon" PADBAttribute="N">3</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Regulated" PADBAttribute="N">No</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Recommneded Automative Application" PADBAttribute="N">ATF+F automatic transmissions</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Composition" PADBAttribute="N">Synthetic</ProductAttribute>
+            </ProductAttributes>
+            <Packages>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002425</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002425</PackageBarCodeCharacters>
+                    <PackageUOM>EA</PackageUOM>
+                    <QuantityofEaches>1</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">1.0</InnerQuantity>
+                </Package>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002401</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002401</PackageBarCodeCharacters>
+                    <PackageUOM>CA</PackageUOM>
+                    <QuantityofEaches>12</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">12.0</InnerQuantity>
+                </Package>
+            </Packages>
+            <PartInterchangeInfo>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BLGS" BrandLabel="1-800-Radiator" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="HGGH" BrandLabel="Agility Autoparts" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="DMRD" BrandLabel="APDI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="FHHC" BrandLabel="DENSO" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">221-9367</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CDVX" BrandLabel="DPI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CNWR" BrandLabel="Ford" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">F75Z8005 MA</PartNumber>
+                </PartInterchange>
+            </PartInterchangeInfo>
+            <DigitalAssets>
+                <DigitalFileInformation MaintenanceType="A" LanguageCode="EN">
+                    <FileName>US_596201_PM_ATF_plus4.</FileName>
+                    <AssetType>P04</AssetType>
+                </DigitalFileInformation>
+            </DigitalAssets>
+        </Item>
+        <Item MaintenanceType="A">
+            <ItemLevelGTIN GTINQualifier="UP">00074130002425</ItemLevelGTIN>
+            <PartNumber>621456</PartNumber>
+            <BrandAAIAID>FBVS</BrandAAIAID>
+            <BrandLabel>Parts Master</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+            <PartTerminologyID>11387</PartTerminologyID>
+            <Descriptions>
+                <Description MaintenanceType="A" DescriptionCode="SHO" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="KSW" LanguageCode="EN">ATF, automatic transmission fluid, ATF+4, chrysler, dodge, jeep</Description>
+                <Description MaintenanceType="A" DescriptionCode="DES" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="2">Replaces ATF+3®</Description>
+                <Description MaintenanceType="A" DescriptionCode="EXT" LanguageCode="EN">ATF+4™ Automatic Transmission Fluid</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="3">Excellent low &amp; high temperature performance  controls friction &amp; provides smooth shift performance</Description>
+                <Description MaintenanceType="A" DescriptionCode="MKT" LanguageCode="EN">ATF+4® is a high-quality synthetic transmission fluid specifically engineered to protect and prolong the life of Chrysler automatic transmissions.</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="1">Officially licensed &amp; Chrysler approved</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="4">Superior anti-wear &amp; anti-oxidation properties  contains additive to reduce foaming</Description>
+            </Descriptions>
+            <ExtendedInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PRC" LanguageCode="EN">NEW</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="EMS" LanguageCode="EN">1</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="HTS" LanguageCode="EN">2710193040</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLC" LanguageCode="EN">12</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLM" LanguageCode="EN">7</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="CTO" LanguageCode="EN">US</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIF">2</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIS">Available to Order</ExtendedProductInformation>
+            </ExtendedInformation>
+            <ProductAttributes>
+                <ProductAttribute MaintenanceType="A" AttributeID="Standards" PADBAttribute="N">A full synthetic ATF approved and licensed under the Chrysler ATF+4® specification.</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. F" PADBAttribute="N">-54</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. C" PADBAttribute="N">greater than 199</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. F" PADBAttribute="N">greater than 390</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. C" PADBAttribute="N">-48</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Type" PADBAttribute="N">Bottle</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Type Included" PADBAttribute="N">Automatic Transmission</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Size" PADBAttribute="N">1.0 Quart</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Gallon" PADBAttribute="N">3</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Regulated" PADBAttribute="N">No</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Recommneded Automative Application" PADBAttribute="N">ATF+F automatic transmissions</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Composition" PADBAttribute="N">Synthetic</ProductAttribute>
+            </ProductAttributes>
+            <Packages>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002425</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002425</PackageBarCodeCharacters>
+                    <PackageUOM>EA</PackageUOM>
+                    <QuantityofEaches>1</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">1.0</InnerQuantity>
+                </Package>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002401</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002401</PackageBarCodeCharacters>
+                    <PackageUOM>CA</PackageUOM>
+                    <QuantityofEaches>12</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">12.0</InnerQuantity>
+                </Package>
+            </Packages>
+            <PartInterchangeInfo>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BLGS" BrandLabel="1-800-Radiator" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="HGGH" BrandLabel="Agility Autoparts" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="DMRD" BrandLabel="APDI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="FHHC" BrandLabel="DENSO" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">221-9367</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CDVX" BrandLabel="DPI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CNWR" BrandLabel="Ford" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">F75Z8005 MA</PartNumber>
+                </PartInterchange>
+            </PartInterchangeInfo>
+            <DigitalAssets>
+                <DigitalFileInformation MaintenanceType="A" LanguageCode="EN">
+                    <FileName>US_596201_PM_ATF_plus4.</FileName>
+                    <AssetType>P04</AssetType>
+                </DigitalFileInformation>
+            </DigitalAssets>
+        </Item>
+        <Item MaintenanceType="A">
+            <ItemLevelGTIN GTINQualifier="UP">00074130002425</ItemLevelGTIN>
+            <PartNumber>562156</PartNumber>
+            <BrandAAIAID>FBVS</BrandAAIAID>
+            <BrandLabel>Parts Master</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+            <PartTerminologyID>11387</PartTerminologyID>
+            <Descriptions>
+                <Description MaintenanceType="A" DescriptionCode="SHO" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="KSW" LanguageCode="EN">ATF, automatic transmission fluid, ATF+4, chrysler, dodge, jeep</Description>
+                <Description MaintenanceType="A" DescriptionCode="DES" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="2">Replaces ATF+3®</Description>
+                <Description MaintenanceType="A" DescriptionCode="EXT" LanguageCode="EN">ATF+4™ Automatic Transmission Fluid</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="3">Excellent low &amp; high temperature performance  controls friction &amp; provides smooth shift performance</Description>
+                <Description MaintenanceType="A" DescriptionCode="MKT" LanguageCode="EN">ATF+4® is a high-quality synthetic transmission fluid specifically engineered to protect and prolong the life of Chrysler automatic transmissions.</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="1">Officially licensed &amp; Chrysler approved</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="4">Superior anti-wear &amp; anti-oxidation properties  contains additive to reduce foaming</Description>
+            </Descriptions>
+            <ExtendedInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PRC" LanguageCode="EN">NEW</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="EMS" LanguageCode="EN">1</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="HTS" LanguageCode="EN">2710193040</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLC" LanguageCode="EN">12</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLM" LanguageCode="EN">7</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="CTO" LanguageCode="EN">US</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIF">2</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIS">Available to Order</ExtendedProductInformation>
+            </ExtendedInformation>
+            <ProductAttributes>
+                <ProductAttribute MaintenanceType="A" AttributeID="Standards" PADBAttribute="N">A full synthetic ATF approved and licensed under the Chrysler ATF+4® specification.</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. F" PADBAttribute="N">-54</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. C" PADBAttribute="N">greater than 199</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. F" PADBAttribute="N">greater than 390</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. C" PADBAttribute="N">-48</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Type" PADBAttribute="N">Bottle</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Type Included" PADBAttribute="N">Automatic Transmission</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Size" PADBAttribute="N">1.0 Quart</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Gallon" PADBAttribute="N">3</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Regulated" PADBAttribute="N">No</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Recommneded Automative Application" PADBAttribute="N">ATF+F automatic transmissions</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Composition" PADBAttribute="N">Synthetic</ProductAttribute>
+            </ProductAttributes>
+            <Packages>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002425</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002425</PackageBarCodeCharacters>
+                    <PackageUOM>EA</PackageUOM>
+                    <QuantityofEaches>1</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">1.0</InnerQuantity>
+                </Package>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002401</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002401</PackageBarCodeCharacters>
+                    <PackageUOM>CA</PackageUOM>
+                    <QuantityofEaches>12</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">12.0</InnerQuantity>
+                </Package>
+            </Packages>
+            <PartInterchangeInfo>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BLGS" BrandLabel="1-800-Radiator" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="HGGH" BrandLabel="Agility Autoparts" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="DMRD" BrandLabel="APDI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="FHHC" BrandLabel="DENSO" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">221-9367</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CDVX" BrandLabel="DPI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CNWR" BrandLabel="Ford" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">F75Z8005 MA</PartNumber>
+                </PartInterchange>
+            </PartInterchangeInfo>
+            <DigitalAssets>
+                <DigitalFileInformation MaintenanceType="A" LanguageCode="EN">
+                    <FileName>US_596201_PM_ATF_plus4.</FileName>
+                    <AssetType>P04</AssetType>
+                </DigitalFileInformation>
+            </DigitalAssets>
+        </Item>
+        <Item MaintenanceType="A">
+            <ItemLevelGTIN GTINQualifier="UP">00074130002425</ItemLevelGTIN>
+            <PartNumber>622145</PartNumber>
+            <BrandAAIAID>FBVS</BrandAAIAID>
+            <BrandLabel>Parts Master</BrandLabel>
+            <SubBrandAAIAID>GMRG</SubBrandAAIAID>
+            <SubBrandLabel>by Valvoline</SubBrandLabel>
+            <ItemQuantitySize UOM="QT">1.0</ItemQuantitySize>
+            <QuantityPerApplication Qualifier="REQ" UOM="EA">1</QuantityPerApplication>
+            <MinimumOrderQuantity UOM="EA">1</MinimumOrderQuantity>
+            <PartTerminologyID>11387</PartTerminologyID>
+            <Descriptions>
+                <Description MaintenanceType="A" DescriptionCode="SHO" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="KSW" LanguageCode="EN">ATF, automatic transmission fluid, ATF+4, chrysler, dodge, jeep</Description>
+                <Description MaintenanceType="A" DescriptionCode="DES" LanguageCode="EN">ATF+4</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="2">Replaces ATF+3®</Description>
+                <Description MaintenanceType="A" DescriptionCode="EXT" LanguageCode="EN">ATF+4™ Automatic Transmission Fluid</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="3">Excellent low &amp; high temperature performance  controls friction &amp; provides smooth shift performance</Description>
+                <Description MaintenanceType="A" DescriptionCode="MKT" LanguageCode="EN">ATF+4® is a high-quality synthetic transmission fluid specifically engineered to protect and prolong the life of Chrysler automatic transmissions.</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="1">Officially licensed &amp; Chrysler approved</Description>
+                <Description MaintenanceType="A" DescriptionCode="FAB" LanguageCode="EN" Sequence="4">Superior anti-wear &amp; anti-oxidation properties  contains additive to reduce foaming</Description>
+            </Descriptions>
+            <ExtendedInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PRC" LanguageCode="EN">NEW</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="EMS" LanguageCode="EN">1</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="HTS" LanguageCode="EN">2710193040</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLC" LanguageCode="EN">12</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="PLM" LanguageCode="EN">7</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="CTO" LanguageCode="EN">US</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIF">2</ExtendedProductInformation>
+                <ExtendedProductInformation MaintenanceType="A" EXPICode="LIS">Available to Order</ExtendedProductInformation>
+            </ExtendedInformation>
+            <ProductAttributes>
+                <ProductAttribute MaintenanceType="A" AttributeID="Standards" PADBAttribute="N">A full synthetic ATF approved and licensed under the Chrysler ATF+4® specification.</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. F" PADBAttribute="N">-54</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. C" PADBAttribute="N">greater than 199</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Flash Point - Deg. F" PADBAttribute="N">greater than 390</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Pour Point - Deg. C" PADBAttribute="N">-48</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Type" PADBAttribute="N">Bottle</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Type Included" PADBAttribute="N">Automatic Transmission</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Container Size" PADBAttribute="N">1.0 Quart</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Gallon" PADBAttribute="N">3</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Regulated" PADBAttribute="N">No</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Recommneded Automative Application" PADBAttribute="N">ATF+F automatic transmissions</ProductAttribute>
+                <ProductAttribute MaintenanceType="A" AttributeID="Oil Composition" PADBAttribute="N">Synthetic</ProductAttribute>
+            </ProductAttributes>
+            <Packages>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002425</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002425</PackageBarCodeCharacters>
+                    <PackageUOM>EA</PackageUOM>
+                    <QuantityofEaches>1</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">1.0</InnerQuantity>
+                </Package>
+                <Package MaintenanceType="A">
+                    <PackageLevelGTIN>00074130002401</PackageLevelGTIN>
+                    <PackageBarCodeCharacters>074130002401</PackageBarCodeCharacters>
+                    <PackageUOM>CA</PackageUOM>
+                    <QuantityofEaches>12</QuantityofEaches>
+                    <InnerQuantity InnerQuantityUOM="EA">12.0</InnerQuantity>
+                </Package>
+            </Packages>
+            <PartInterchangeInfo>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="BLGS" BrandLabel="1-800-Radiator" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="HGGH" BrandLabel="Agility Autoparts" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="DMRD" BrandLabel="APDI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">8012165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="FHHC" BrandLabel="DENSO" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">221-9367</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CDVX" BrandLabel="DPI" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">2165</PartNumber>
+                </PartInterchange>
+                <PartInterchange MaintenanceType="A" BrandAAIAID="CNWR" BrandLabel="Ford" ItemEquivalentUOM="EA" QualityGradeLevel="S">
+                    <PartNumber InterchangeQuantity="1" UOM="EA">F75Z8005 MA</PartNumber>
+                </PartInterchange>
+            </PartInterchangeInfo>
+            <DigitalAssets>
+                <DigitalFileInformation MaintenanceType="A" LanguageCode="EN">
+                    <FileName>US_596201_PM_ATF_plus4.</FileName>
+                    <AssetType>P04</AssetType>
+                </DigitalFileInformation>
+            </DigitalAssets>
+        </Item>
+    </Items>
+</PIES>

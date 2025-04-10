@@ -228,6 +228,7 @@ public class XmlParsing {
     public static void processExtendedProductInformation(XMLEventReader reader, List<Map<String, String>> extendedProductInformationList, Map<String, Object> currentItem) throws Exception {
         Debug.logInfo("Processing Extended Product Information", MODULE);
 
+        //it checks if the currentItem map already has a key called ExtendedInformation and if it does not it initializes a new empty list
         if (!currentItem.containsKey("extendedInformation")) {
             currentItem.put("extendedInformation", new ArrayList<>());
         }
@@ -282,12 +283,13 @@ public class XmlParsing {
                 Attribute languageCodeAttr = startElement.getAttributeByName(new QName("LanguageCode"));
                 String descriptionCode = (descriptionCodeAttr != null) ? descriptionCodeAttr.getValue() : "";
                 String languageCode = (languageCodeAttr != null) ? languageCodeAttr.getValue() : "";
-                //string builder is used to build the final description string by appending text chunks
+                //string builder is used to build the final description string by appending text chunks, used to accumulate text content
                 StringBuilder descriptionText = new StringBuilder();
 
                 while (reader.hasNext()) {
                     event = reader.nextEvent();
                     if (event.isCharacters()) {
+                        //keeps on appending characters until it reaches the end of description tag
                         descriptionText.append(event.asCharacters().getData().trim()).append(" ");
                     } else if (event.isEndElement() && "Description".equals(event.asEndElement().getName().getLocalPart())) {
                         break;
@@ -518,6 +520,7 @@ public class XmlParsing {
                     createItemLevelGTIN(dctx, partNumber, itemLevelGTIN, userLogin);
                     createProductCategory(dctx, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, userLogin);
 
+                    //we are iterating through a list of descriptions; getOrDefault helps us prevent NUllPointerException
                     if(descriptions!=null) {
                         for (Map<String, String> desc : descriptions) {
                             String languageCode = desc.getOrDefault("LanguageCode", "");
@@ -909,7 +912,6 @@ public class XmlParsing {
                         "productFeatureTypeId", "EXPI",
                         "userLogin", userLogin
                 );
-
                 Map<String, Object> featureTypeResult = dctx.getDispatcher().runSync("createProductFeatureType", productFeatureTypeParams);
 
                 if (!ServiceUtil.isSuccess(featureTypeResult)) {
@@ -917,7 +919,6 @@ public class XmlParsing {
                     return;
                 }
             }
-
             GenericValue existingProductFeature = EntityQuery.use(delegator)
                     .from("ProductFeature")
                     .where("productFeatureId", productFeatureId)
@@ -927,7 +928,6 @@ public class XmlParsing {
                 Debug.logWarning("Product with productFeatureId: " + productFeatureId + " already exists.", MODULE);
                 return;
             }
-
             Map<String, Object> productFeatureParams = UtilMisc.toMap(
                     "productFeatureId", productFeatureId,
                     "productFeatureTypeId", "EXPI",
@@ -995,8 +995,10 @@ public class XmlParsing {
                 dctx.getDispatcher().runSync("createProductFeatureCategory", catCtx);
                 Debug.logInfo("ProductFeatureCategory 'PACKAGE' created successfully!", MODULE);
             }
-            for (Map<String, String> pkg : packages) {
-                for (Map.Entry<String, String> entry : pkg.entrySet()) {
+            for (Map<String, String> pkg : packages) { //loops through each package map in the list
+                for (Map.Entry<String, String> entry : pkg.entrySet()) { //loops through each key value pair in the pkg
+
+                    //then accessing these key value pairs
                     String tagName = entry.getKey();
                     String tagValue = entry.getValue();
 
@@ -1193,6 +1195,7 @@ public class XmlParsing {
                     Debug.logInfo("Attribute already exists for: " + tagName + ", skipping creation.", MODULE);
                 }
             }
+
         } catch (GenericServiceException | GenericEntityException e) {
             Debug.logError(e, "Error while creating DataResourceAttributes", MODULE);
         } catch (Exception e) {
@@ -1308,6 +1311,7 @@ public class XmlParsing {
     private static String getCharacterData(XMLEventReader reader) throws XMLStreamException {
         String result = "";
         XMLEvent event = reader.nextEvent();
+        //this is important to check if the event contains character or else it might throw an exception
         if (event instanceof Characters) {
             result = event.asCharacters().getData();
         }
