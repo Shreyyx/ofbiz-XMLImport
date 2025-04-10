@@ -83,7 +83,7 @@ public class XmlParsing {
                         String itemLevelGTIN = Objects.toString(currentItem.get("ItemLevelGTIN"), "");
                         String itemQuantitySize = Objects.toString(currentItem.get("ItemQuantitySize"), "");
                         String quantityPerApplication = Objects.toString(currentItem.get("QuantityPerApplication"), "");
-//                        String minimumOrderQuantity = Objects.toString(currentItem.get("MinimumOrderQuantity"), "");
+                        String minimumOrderQuantity = Objects.toString(currentItem.get("MinimumOrderQuantity"), "");
                         String brandAAIAID = Objects.toString(currentItem.get("BrandAAIAID"), "");
                         String brandLabel = Objects.toString(currentItem.get("BrandLabel"), "");
                         String subBrandAAIAID = Objects.toString(currentItem.get("SubBrandAAIAID"), "");
@@ -106,7 +106,7 @@ public class XmlParsing {
                         Debug.logInfo("Final price details for item: " + prices, MODULE);
                         Debug.logInfo("Final digital asset details for item: " + digitalAssets, MODULE);
                         Debug.logInfo("Final part interchange details for item: " + partInterchangeInfo, MODULE);
-                        Map<String, Object> createdItem = createItem(dctx, partNumber, itemQuantitySize, quantityPerApplication, itemLevelGTIN, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, descriptions, extendedInformation, productAttributes, packages, prices, digitalAssets, partInterchangeInfo, userLogin);
+                        Map<String, Object> createdItem = createItem(dctx, partNumber, itemQuantitySize, quantityPerApplication, minimumOrderQuantity, itemLevelGTIN, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, descriptions, extendedInformation, productAttributes, packages, prices, digitalAssets, partInterchangeInfo, userLogin);
                         Debug.logInfo("Create Item Response: " + createdItem, MODULE);
                         itemsList.add(currentItem);
                         itemCount++;
@@ -135,7 +135,7 @@ public class XmlParsing {
         //used to store values of these tags if these tags are encountered
         //list.of()--> creates an immutable list from the given elements , we can also use or symbol "||"
         //we can also use Arrays.asList here to create a mutable list
-        if (List.of("PartNumber", "ItemLevelGTIN", "ItemQuantitySize", "QuantityPerApplication", "BrandAAIAID", "BrandLabel", "SubBrandAAIAID", "SubBrandLabel", "PartTerminologyID").contains(tagName)) {
+        if (List.of("PartNumber", "ItemLevelGTIN", "ItemQuantitySize", "QuantityPerApplication", "MinimumOrderQuantity", "BrandAAIAID", "BrandLabel", "SubBrandAAIAID", "SubBrandLabel", "PartTerminologyID").contains(tagName)) {
             XMLEvent nextEvent = reader.nextEvent();
             if (nextEvent.isCharacters()) { //isCharacter checks if the next event is a text
                 String value = nextEvent.asCharacters().getData().trim(); //extracts the actual text from XML tag
@@ -389,13 +389,11 @@ public class XmlParsing {
                         insideAssetDimensions = true;
                         currentDigitalAsset.put("AssetUOM", getAttributeValue(event.asStartElement(), "UOM"));
                         break;
-
                     case "AssetHeight":
                         if (insideAssetDimensions) {
                             currentDigitalAsset.put("AssetHeight", getCharacterData(reader));
                         }
                         break;
-
                     case "AssetWidth":
                         if (insideAssetDimensions) {
                             currentDigitalAsset.put("AssetWidth", getCharacterData(reader));
@@ -482,7 +480,6 @@ public class XmlParsing {
                             break;
                         }
                     }
-
                     partInterchangeList.add(interchangeMap);
                 }
 
@@ -493,7 +490,7 @@ public class XmlParsing {
         return partInterchangeList;
     }
 
-    private static Map<String, Object> createItem(DispatchContext dctx, String partNumber, String itemQuantitySize, String quantityPerApplication, String itemLevelGTIN, String brandAAIAID, String brandLabel, String partTerminologyID, String subBrandAAIAID, String subBrandLabel, List<Map<String, String>> descriptions, List<Map<String, String>> extendedInformation, List<Map<String, String>> productAttributes, List<Map<String, String>> packageDetails, List<Map<String, String>> priceDetail, List<Map<String, String>> digitalAssetDetail, List<Map<String, String>> partInterchangeDetail,
+    private static Map<String, Object> createItem(DispatchContext dctx, String partNumber, String itemQuantitySize, String quantityPerApplication, String minimumOrderQuantity, String itemLevelGTIN, String brandAAIAID, String brandLabel, String partTerminologyID, String subBrandAAIAID, String subBrandLabel, List<Map<String, String>> descriptions, List<Map<String, String>> extendedInformation, List<Map<String, String>> productAttributes, List<Map<String, String>> packageDetails, List<Map<String, String>> priceDetail, List<Map<String, String>> digitalAssetDetail, List<Map<String, String>> partInterchangeDetail,
             GenericValue userLogin) {
 
         Map<String, Object> response = new HashMap<>();
@@ -511,7 +508,7 @@ public class XmlParsing {
                         "internalName", partNumber,
                         "piecesIncluded", itemQuantitySize,
                         "quantityIncluded", quantityPerApplication,
-                        "orderDecimalQuantity", "1",
+                        "orderDecimalQuantity", minimumOrderQuantity,
                         "userLogin", userLogin
                 );
                 Debug.logInfo("Creating new product: " + productParams, MODULE);
@@ -526,7 +523,7 @@ public class XmlParsing {
                             String languageCode = desc.getOrDefault("LanguageCode", "");
                             String descriptionCode = desc.getOrDefault("DescriptionCode", "");
                             String finalText = desc.getOrDefault("Description", "");
-                            createDescription(dctx, descriptionCode, languageCode, finalText, userLogin);
+                            createDescription(dctx, descriptionCode, languageCode, finalText, partNumber, userLogin);
                         }
                     }
                     if(extendedInformation!=null) {
@@ -829,7 +826,7 @@ public class XmlParsing {
         }
     }
 
-    private static void createDescription(DispatchContext dctx, String descriptionCode, String languageCode, String finalText, GenericValue userLogin) {
+    private static void createDescription(DispatchContext dctx, String descriptionCode, String languageCode, String finalText, String partNumber, GenericValue userLogin) {
         Delegator delegator = dctx.getDelegator();
         String contentId = delegator.getNextSeqId("Content");
 
@@ -874,9 +871,23 @@ public class XmlParsing {
                 Map<String, Object> contentResult = dctx.getDispatcher().runSync("createContent", contentParams);
                 if (ServiceUtil.isSuccess(contentResult)) {
                     Debug.logInfo("Content created successfully with contentId: " + contentId, MODULE);
-//                    createProductContent(dctx, productId, contentId, userLogin);
                 }
             }
+            Map<String, Object> productContentParams = UtilMisc.toMap(
+                    "productId", partNumber,
+                    "contentId", contentId,
+                    "productContentTypeId", "DESCRIPTION",
+                    "fromDate", UtilDateTime.nowTimestamp(),
+                    "userLogin", userLogin
+            );
+
+            Map<String, Object> productContentResult = dctx.getDispatcher().runSync("createProductContent", productContentParams);
+
+            if (!ServiceUtil.isSuccess(productContentResult)) {
+                Debug.logError("Error creating product content: " + productContentResult.get("errorMessage"), MODULE);
+                return;
+            }
+
         } catch (GenericServiceException e) {
             Debug.logError("Error creating description: " + e.getMessage(), MODULE);
         }
