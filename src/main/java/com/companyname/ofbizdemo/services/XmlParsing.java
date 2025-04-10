@@ -520,14 +520,12 @@ public class XmlParsing {
                     Debug.logInfo("Product created successfully: " + partNumber, MODULE);
                     createItemLevelGTIN(dctx, partNumber, itemLevelGTIN, userLogin);
                     createProductCategory(dctx, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, userLogin);
-                    createProductCategoryRollup(dctx, subBrandAAIAID, brandAAIAID, userLogin);
 
                     if(descriptions!=null) {
                         for (Map<String, String> desc : descriptions) {
                             String languageCode = desc.getOrDefault("LanguageCode", "");
                             String descriptionCode = desc.getOrDefault("DescriptionCode", "");
                             String finalText = desc.getOrDefault("Description", "");
-//                            String productId = desc.getOrDefault("productId", "");
                             createDescription(dctx, descriptionCode, languageCode, finalText, userLogin);
                         }
                     }
@@ -558,8 +556,8 @@ public class XmlParsing {
                             String assetWidth = digitalAssetInfo.getOrDefault("AssetWidth", "");
                             String uri = digitalAssetInfo.getOrDefault("uri", "");
                             String FileType = digitalAssetInfo.getOrDefault("FileType", "");
-                            createDataResourceAttribute(dctx, AssetType, representation, background, orientationView, assetHeight, assetWidth, uri, userLogin);
-                            createDigitalAssets(dctx, languageCode, FileName, FileType, userLogin);
+                            createDataResourceAttribute(dctx, AssetType, representation, background, orientationView, assetHeight, assetWidth, userLogin);
+                            createDigitalAssets(dctx, languageCode, FileName, FileType, uri, partNumber, userLogin);
                         }
                     }
                     if (partInterchangeDetail != null) {
@@ -679,14 +677,15 @@ public class XmlParsing {
                     return;
                 }
             }
+
+            String brandCategoryId;
             GenericValue existingBrandCategory = EntityQuery.use(delegator)
                     .from("ProductCategory")
-                    .where("categoryName", brandAAIAID,
-                            "productCategoryTypeId", "BRAND_CATEGORY")
+                    .where("categoryName", brandAAIAID, "productCategoryTypeId", "BRAND_CATEGORY")
                     .queryFirst();
 
             if (existingBrandCategory == null) {
-                String brandCategoryId = delegator.getNextSeqId("ProductCategory");
+                brandCategoryId = delegator.getNextSeqId("ProductCategory");
 
                 Map<String, Object> brandCategoryParams = UtilMisc.toMap(
                         "productCategoryId", brandCategoryId,
@@ -697,16 +696,20 @@ public class XmlParsing {
                 );
 
                 Map<String, Object> categoryResult = dctx.getDispatcher().runSync("createProductCategory", brandCategoryParams);
-                    if (ServiceUtil.isSuccess(categoryResult)) {
+                if (ServiceUtil.isSuccess(categoryResult)) {
                     Debug.logInfo("BRAND_CATEGORY created with ID: " + brandCategoryId, MODULE);
                 } else {
                     Debug.logError("Error creating BRAND_CATEGORY: " + categoryResult.get("errorMessage"), MODULE);
+                    return;
                 }
             } else {
-                Debug.logInfo("BRAND_CATEGORY already exists for: " + brandAAIAID, MODULE);
+                brandCategoryId = existingBrandCategory.getString("productCategoryId");
+                Debug.logInfo("BRAND_CATEGORY already exists with ID: " + brandCategoryId, MODULE);
             }
 
             if (UtilValidate.isNotEmpty(subBrandAAIAID) && UtilValidate.isNotEmpty(subBrandLabel)) {
+                String subBrandCategoryId;
+
                 GenericValue subBrandCategoryType = EntityQuery.use(delegator)
                         .from("ProductCategoryType")
                         .where("productCategoryTypeId", "SUBBRAND_CATEGORY")
@@ -723,11 +726,11 @@ public class XmlParsing {
 
                 GenericValue existingSubBrandCategory = EntityQuery.use(delegator)
                         .from("ProductCategory")
-                        .where("categoryName", subBrandAAIAID)
+                        .where("categoryName", subBrandAAIAID, "productCategoryTypeId", "SUBBRAND_CATEGORY")
                         .queryFirst();
 
                 if (existingSubBrandCategory == null) {
-                    String subBrandCategoryId = delegator.getNextSeqId("ProductCategory");
+                    subBrandCategoryId = delegator.getNextSeqId("ProductCategory");
 
                     Map<String, Object> subBrandCategoryParams = UtilMisc.toMap(
                             "productCategoryId", subBrandCategoryId,
@@ -738,14 +741,12 @@ public class XmlParsing {
                     );
 
                     Map<String, Object> subResult = dctx.getDispatcher().runSync("createProductCategory", subBrandCategoryParams);
-                    createProductCategoryRollup(dctx, brandAAIAID, subBrandAAIAID, userLogin);
                     if (ServiceUtil.isSuccess(subResult)) {
                         Debug.logInfo("SUBBRAND_CATEGORY created with ID: " + subBrandCategoryId, MODULE);
+                        createProductCategoryRollup(dctx, brandCategoryId, subBrandCategoryId, userLogin); // pass actual IDs
                     } else {
                         Debug.logError("Error creating SUBBRAND_CATEGORY: " + subResult.get("errorMessage"), MODULE);
                     }
-                } else {
-                    Debug.logInfo("SUBBRAND_CATEGORY already exists for: " + subBrandAAIAID, MODULE);
                 }
             }
 
@@ -802,33 +803,29 @@ public class XmlParsing {
         }
     }
 
-    public static void createProductCategoryRollup(DispatchContext dctx, String brandAAIAID, String subBrandAAIAID, GenericValue userLogin) {
+    public static void createProductCategoryRollup(DispatchContext dctx, String brandCategoryId, String subBrandCategoryId, GenericValue userLogin) {
         Delegator delegator = dctx.getDelegator();
 
         try {
             GenericValue existingRollup = EntityQuery.use(delegator)
                     .from("ProductCategoryRollup")
-                    .where("productCategoryId", subBrandAAIAID, "parentProductCategoryId", brandAAIAID)
+                    .where("productCategoryId", subBrandCategoryId, "parentProductCategoryId", brandCategoryId)
                     .queryFirst();
 
             if (existingRollup != null) {
-                Debug.logInfo("ProductCategoryRollup already exists for SubBrand: " + subBrandAAIAID + "," + brandAAIAID, MODULE);
+                Debug.logInfo("ProductCategoryRollup already exists for: " + subBrandCategoryId + " -> " + brandCategoryId, MODULE);
                 return;
             }
-
             GenericValue newRollup = delegator.makeValue("ProductCategoryRollup");
-            newRollup.set("productCategoryId", subBrandAAIAID);
-            newRollup.set("parentProductCategoryId", brandAAIAID);
+            newRollup.set("productCategoryId", subBrandCategoryId);
+            newRollup.set("parentProductCategoryId", brandCategoryId);
             newRollup.set("fromDate", UtilDateTime.nowTimestamp());
 
             delegator.create(newRollup);
-
-            Debug.logInfo("ProductCategoryRollup created successfully: " + subBrandAAIAID + " -> " + brandAAIAID, MODULE);
+            Debug.logInfo("ProductCategoryRollup created successfully: " + subBrandCategoryId + " -> " + brandCategoryId, MODULE);
 
         } catch (GenericEntityException e) {
             Debug.logError(e, "Entity error while creating ProductCategoryRollup", MODULE);
-        } catch (Exception e) {
-            Debug.logError(e, "Unexpected error while creating ProductCategoryRollup", MODULE);
         }
     }
 
@@ -884,7 +881,6 @@ public class XmlParsing {
             Debug.logError("Error creating description: " + e.getMessage(), MODULE);
         }
     }
-
 
     public static void storeExtendedProductInformation(DispatchContext dctx, String expiCode, String finalExtendedProductInformationText, GenericValue userLogin) {
 
@@ -1076,7 +1072,7 @@ public class XmlParsing {
         }
     }
 
-    private static void createDigitalAssets(DispatchContext dctx, String languageCode, String fileName, String fileType, GenericValue userLogin) {
+    private static void createDigitalAssets(DispatchContext dctx, String languageCode, String fileName, String fileType, String uri, String partNumber, GenericValue userLogin) {
 
         Delegator delegator = dctx.getDelegator();
         String dataResourceId = delegator.getNextSeqId("DataResource");
@@ -1088,6 +1084,7 @@ public class XmlParsing {
                     "dataResourceName", fileName,
                     "localeString", languageCode,
                     "mimeTypeId", fileType,
+                    "objectInfo", uri,
                     "userLogin", userLogin
             );
 
@@ -1097,12 +1094,43 @@ public class XmlParsing {
                 Debug.logError("Error creating data resource: " + dataResourceResult.get("errorMessage"), MODULE);
                 return;
             }
+
+            Map<String, Object> contentParams = UtilMisc.toMap(
+                    "dataResourceId", dataResourceId,
+                    "contentTypeId", "DOCUMENT",
+                    "userLogin", userLogin
+            );
+
+            Map<String, Object> contentResult = dctx.getDispatcher().runSync("createContent", contentParams);
+
+            if (!ServiceUtil.isSuccess(contentResult)) {
+                Debug.logError("Error creating content: " + contentResult.get("errorMessage"), MODULE);
+                return;
+            }
+
+            //gets the auto-generated contentId
+            String contentId = (String) contentResult.get("contentId");
+            Map<String, Object> productContentParams = UtilMisc.toMap(
+                    "productId", partNumber,
+                    "contentId", contentId,
+                    "productContentTypeId", "DESCRIPTION",
+                    "fromDate", UtilDateTime.nowTimestamp(),
+                    "userLogin", userLogin
+            );
+
+            Map<String, Object> productContentResult = dctx.getDispatcher().runSync("createProductContent", productContentParams);
+
+            if (!ServiceUtil.isSuccess(productContentResult)) {
+                Debug.logError("Error creating product content: " + productContentResult.get("errorMessage"), MODULE);
+                return;
+            }
+
         } catch (GenericServiceException e) {
             Debug.logError(e, "Error creating Data Resource", MODULE);
         }
     }
 
-    private static void createDataResourceAttribute(DispatchContext dctx, String assetType, String representation, String background, String orientationView, String assetHeight, String assetWidth, String uri, GenericValue userLogin) {
+    private static void createDataResourceAttribute(DispatchContext dctx, String assetType, String representation, String background, String orientationView, String assetHeight, String assetWidth, GenericValue userLogin) {
 
         Delegator delegator = dctx.getDelegator();
         LocalDispatcher dispatcher = dctx.getDispatcher();
@@ -1129,7 +1157,6 @@ public class XmlParsing {
             attributes.put("OrientationView", orientationView);
             attributes.put("AssetHeight", assetHeight);
             attributes.put("AssetWidth", assetWidth);
-            attributes.put("uri", uri);
             for (Map.Entry<String, String> entry : attributes.entrySet()) {
                 String tagName = entry.getKey();
                 String tagValue = entry.getValue();
