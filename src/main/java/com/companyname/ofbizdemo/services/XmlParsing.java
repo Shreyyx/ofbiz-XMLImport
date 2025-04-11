@@ -524,7 +524,7 @@ public class XmlParsing {
                 if (ServiceUtil.isSuccess(result)) {
                     Debug.logInfo("Product created successfully: " + partNumber, MODULE);
                     createItemLevelGTIN(dctx, partNumber, itemLevelGTIN, userLogin);
-                    createProductCategory(dctx, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, userLogin);
+                    createProductCategory(dctx, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, partNumber, userLogin);
 
                     //we are iterating through a list of descriptions; getOrDefault helps us prevent NUllPointerException
                     if(descriptions!=null) {
@@ -662,8 +662,12 @@ public class XmlParsing {
     }
 
 
-    public static void createProductCategory(DispatchContext dctx, String brandAAIAID, String brandLabel, String partTerminologyID, String subBrandAAIAID, String subBrandLabel, GenericValue userLogin) {
+    public static void createProductCategory(DispatchContext dctx, String brandAAIAID, String brandLabel, String partTerminologyID, String subBrandAAIAID, String subBrandLabel, String partNumber, GenericValue userLogin) {
         Delegator delegator = dctx.getDelegator();
+
+        String brandCategoryId = null;
+        String subBrandCategoryId = null;
+        String partTerminologyCategoryId = null;
 
         try {
             GenericValue brandCategoryType = EntityQuery.use(delegator)
@@ -684,7 +688,6 @@ public class XmlParsing {
                 }
             }
 
-            String brandCategoryId;
             GenericValue existingBrandCategory = EntityQuery.use(delegator)
                     .from("ProductCategory")
                     .where("categoryName", brandAAIAID, "productCategoryTypeId", "BRAND_CATEGORY")
@@ -714,8 +717,6 @@ public class XmlParsing {
             }
 
             if (UtilValidate.isNotEmpty(subBrandAAIAID) && UtilValidate.isNotEmpty(subBrandLabel)) {
-                String subBrandCategoryId;
-
                 GenericValue subBrandCategoryType = EntityQuery.use(delegator)
                         .from("ProductCategoryType")
                         .where("productCategoryTypeId", "SUBBRAND_CATEGORY")
@@ -749,10 +750,13 @@ public class XmlParsing {
                     Map<String, Object> subResult = dctx.getDispatcher().runSync("createProductCategory", subBrandCategoryParams);
                     if (ServiceUtil.isSuccess(subResult)) {
                         Debug.logInfo("SUBBRAND_CATEGORY created with ID: " + subBrandCategoryId, MODULE);
-                        createProductCategoryRollup(dctx, brandCategoryId, subBrandCategoryId, userLogin); // pass actual IDs
+                        createProductCategoryRollup(dctx, brandCategoryId, subBrandCategoryId, userLogin);
                     } else {
                         Debug.logError("Error creating SUBBRAND_CATEGORY: " + subResult.get("errorMessage"), MODULE);
                     }
+                } else {
+                    subBrandCategoryId = existingSubBrandCategory.getString("productCategoryId");
+                    Debug.logInfo("SUBBRAND_CATEGORY already exists with ID: " + subBrandCategoryId, MODULE);
                 }
             }
 
@@ -777,12 +781,11 @@ public class XmlParsing {
 
                 GenericValue existingTerminologyCategory = EntityQuery.use(delegator)
                         .from("ProductCategory")
-                        .where("categoryName", partTerminologyID,
-                                "productCategoryTypeId", "PART_TERMINOLOGY")
+                        .where("categoryName", partTerminologyID, "productCategoryTypeId", "PART_TERMINOLOGY")
                         .queryFirst();
 
                 if (existingTerminologyCategory == null) {
-                    String partTerminologyCategoryId = delegator.getNextSeqId("ProductCategory");
+                    partTerminologyCategoryId = delegator.getNextSeqId("ProductCategory");
 
                     Map<String, Object> partCategoryParams = UtilMisc.toMap(
                             "productCategoryId", partTerminologyCategoryId,
@@ -799,15 +802,19 @@ public class XmlParsing {
                         Debug.logError("Error creating PART_TERMINOLOGY ProductCategory: " + result.get("errorMessage"), MODULE);
                     }
                 } else {
+                    partTerminologyCategoryId = existingTerminologyCategory.getString("productCategoryId");
                     Debug.logInfo("PART_TERMINOLOGY already exists for: " + partTerminologyID, MODULE);
                 }
             }
+            addProductToCategory(dctx, brandCategoryId, subBrandCategoryId, partTerminologyCategoryId, partNumber, userLogin);
+
         } catch (GenericServiceException e) {
             Debug.logError("ServiceException while creating product category: " + e.getMessage(), MODULE);
         } catch (Exception e) {
             Debug.logError("Unexpected error while creating product category: " + e.getMessage(), MODULE);
         }
     }
+
 
     public static void createProductCategoryRollup(DispatchContext dctx, String brandCategoryId, String subBrandCategoryId, GenericValue userLogin) {
         Delegator delegator = dctx.getDelegator();
