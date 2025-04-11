@@ -815,6 +815,34 @@ public class XmlParsing {
         }
     }
 
+    //Helper method to link category with product
+    private static void addProductToCategory(DispatchContext dctx, String brandCategoryId, String subBrandCategoryId, String partTerminologyCategoryId, String partNumber, GenericValue userLogin) {
+        try {
+            List<String> categoryIds = new ArrayList<>();
+            if (UtilValidate.isNotEmpty(brandCategoryId)) categoryIds.add(brandCategoryId);
+            if (UtilValidate.isNotEmpty(subBrandCategoryId)) categoryIds.add(subBrandCategoryId);
+            if (UtilValidate.isNotEmpty(partTerminologyCategoryId)) categoryIds.add(partTerminologyCategoryId);
+
+            for (String categoryId : categoryIds) {
+                Map<String, Object> context = new HashMap<>();
+                context.put("productCategoryId", categoryId);
+                context.put("productId", partNumber);
+                context.put("fromDate", UtilDateTime.nowTimestamp());
+                context.put("userLogin", userLogin);
+
+                Map<String, Object> result = dctx.getDispatcher().runSync("addProductToCategory", context);
+
+                if (ServiceUtil.isSuccess(result)) {
+                    Debug.logInfo("Product [" + partNumber + "] successfully added to category [" + categoryId + "]", MODULE);
+                } else {
+                    Debug.logError("Failed to add product to category [" + categoryId + "]: " + result.get("errorMessage"), MODULE);
+                }
+            }
+
+        } catch (GenericServiceException e) {
+            Debug.logError("Exception while adding product to categories: " + e.getMessage(), MODULE);
+        }
+    }
 
     public static void createProductCategoryRollup(DispatchContext dctx, String brandCategoryId, String subBrandCategoryId, GenericValue userLogin) {
         Delegator delegator = dctx.getDelegator();
