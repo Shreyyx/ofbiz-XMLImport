@@ -1155,7 +1155,7 @@ public class XmlParsing {
             Map<String, Object> productContentParams = UtilMisc.toMap(
                     "productId", partNumber,
                     "contentId", contentId,
-                    "productContentTypeId", "DESCRIPTION",
+                    "productContentTypeId", "DIGITAL_DOWNLOAD",
                     "fromDate", UtilDateTime.nowTimestamp(),
                     "userLogin", userLogin
             );
