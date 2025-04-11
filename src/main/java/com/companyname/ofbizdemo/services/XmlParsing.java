@@ -562,7 +562,7 @@ public class XmlParsing {
                             String assetWidth = digitalAssetInfo.getOrDefault("AssetWidth", "");
                             String uri = digitalAssetInfo.getOrDefault("uri", "");
                             String FileType = digitalAssetInfo.getOrDefault("FileType", "");
-                            createDataResourceAttribute(dctx, AssetType, representation, background, orientationView, assetHeight, assetWidth, userLogin);
+                            createDataResourceAttribute(dctx, AssetType, representation, background, orientationView, assetHeight, assetWidth, partNumber, userLogin);
                             createDigitalAssets(dctx, languageCode, FileName, FileType, uri, partNumber, userLogin);
                         }
                     }
@@ -1207,7 +1207,7 @@ public class XmlParsing {
         }
     }
 
-    private static void createDataResourceAttribute(DispatchContext dctx, String assetType, String representation, String background, String orientationView, String assetHeight, String assetWidth, GenericValue userLogin) {
+    private static void createDataResourceAttribute(DispatchContext dctx, String assetType, String representation, String background, String orientationView, String assetHeight, String assetWidth, String partNumber, GenericValue userLogin) {
 
         Delegator delegator = dctx.getDelegator();
         LocalDispatcher dispatcher = dctx.getDispatcher();
@@ -1252,6 +1252,7 @@ public class XmlParsing {
                     Map<String, Object> result = dispatcher.runSync("createDataResourceAttribute", params);
                     if (ServiceUtil.isSuccess(result)) {
                         Debug.logInfo("Created DataResourceAttribute: " + tagName + " = " + tagValue, MODULE);
+                        createContentAndProductContent(dctx, dataResourceId, partNumber, userLogin);
                     } else {
                         Debug.logError("Error creating attribute for " + tagName + ": " + result.get("errorMessage"), MODULE);
                     }
@@ -1264,6 +1265,49 @@ public class XmlParsing {
             Debug.logError(e, "Error while creating DataResourceAttributes", MODULE);
         } catch (Exception e) {
             Debug.logError(e, "Unexpected error while creating DataResourceAttributes", MODULE);
+        }
+    }
+
+    //Helper method to create content and product Content
+    private static void createContentAndProductContent(DispatchContext dctx, String dataResourceId, String partNumber, GenericValue userLogin) {
+        Delegator delegator = dctx.getDelegator();
+        LocalDispatcher dispatcher = dctx.getDispatcher();
+
+        try {
+            String contentId = delegator.getNextSeqId("Content");
+            Map<String, Object> contentCtx = UtilMisc.toMap(
+                    "contentId", contentId,
+                    "dataResourceId", dataResourceId,
+                    "contentTypeId", "DOCUMENT",
+                    "userLogin", userLogin
+            );
+            Map<String, Object> contentResult = dispatcher.runSync("createContent", contentCtx);
+
+            if (ServiceUtil.isError(contentResult)) {
+                Debug.logError("Error creating Content: " + contentResult.get("errorMessage"), MODULE);
+                return;
+            }
+            Debug.logInfo("Successfully created Content with ID: " + contentId, MODULE);
+
+            Map<String, Object> productContentCtx = UtilMisc.toMap(
+                    "productId", partNumber,
+                    "contentId", contentId,
+                    "productContentTypeId", "DIGITAL_DOWNLOAD",
+                    "fromDate", UtilDateTime.nowTimestamp(),
+                    "userLogin", userLogin
+            );
+            Map<String, Object> productContentResult = dispatcher.runSync("createProductContent", productContentCtx);
+
+            if (ServiceUtil.isSuccess(productContentResult)) {
+                Debug.logInfo("Successfully created ProductContent for product: " + partNumber + ", content: " + contentId, MODULE);
+            } else {
+                Debug.logError("Error creating ProductContent: " + productContentResult.get("errorMessage"), MODULE);
+            }
+
+        } catch (GenericServiceException e) {
+            Debug.logError(e, "ServiceException while creating Content and ProductContent", MODULE);
+        } catch (Exception e) {
+            Debug.logError(e, "Unexpected error while creating Content and ProductContent", MODULE);
         }
     }
 
