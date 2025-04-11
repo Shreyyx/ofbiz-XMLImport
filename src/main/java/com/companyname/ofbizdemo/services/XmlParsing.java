@@ -539,7 +539,7 @@ public class XmlParsing {
                         for (Map<String, String> extInfo : extendedInformation) {
                             String expiCode = extInfo.getOrDefault("EXPICode", "");
                             String finalExtendedProductInformationText = extInfo.getOrDefault("ExtendedProductInformation", "");
-                            storeExtendedProductInformation(dctx, expiCode, finalExtendedProductInformationText, userLogin);
+                            storeExtendedProductInformation(dctx, expiCode, finalExtendedProductInformationText, partNumber, userLogin);
                         }
                     }
                     if(priceDetail!=null) {
@@ -902,7 +902,7 @@ public class XmlParsing {
         }
     }
 
-    public static void storeExtendedProductInformation(DispatchContext dctx, String expiCode, String finalExtendedProductInformationText, GenericValue userLogin) {
+    public static void storeExtendedProductInformation(DispatchContext dctx, String expiCode, String finalExtendedProductInformationText, String partNumber, GenericValue userLogin) {
 
         Delegator delegator = dctx.getDelegator();
         String productFeatureId = delegator.getNextSeqId("ProductFeature");
@@ -946,6 +946,7 @@ public class XmlParsing {
 
             if (ServiceUtil.isSuccess(featureResult)) {
                 Debug.logInfo("Product Feature created successfully with productFeatureId: " + productFeatureId, MODULE);
+                applyFeatureToProduct(dctx, partNumber, productFeatureId, userLogin);
             } else {
                 Debug.logError("Error creating ProductFeature: " + featureResult.get("errorMessage"), MODULE);
             }
@@ -954,6 +955,28 @@ public class XmlParsing {
             Debug.logError("ServiceException while creating product feature: " + e.getMessage(), MODULE);
         } catch (Exception e) {
             Debug.logError("Unexpected error while creating product feature: " + e.getMessage(), MODULE);
+        }
+    }
+
+    //helper method to link product with feature
+    public static void applyFeatureToProduct(DispatchContext dctx, String partNumber, String productFeatureId, GenericValue userLogin) {
+        try {
+            Map<String, Object> context = new HashMap<>();
+            context.put("productId", partNumber);
+            context.put("productFeatureId", productFeatureId);
+            context.put("productFeatureApplTypeId", "STANDARD_FEATURE");
+            context.put("fromDate", UtilDateTime.nowTimestamp());
+            context.put("userLogin", userLogin);
+
+            Map<String, Object> result = dctx.getDispatcher().runSync("applyFeatureToProduct", context);
+
+            if (ServiceUtil.isSuccess(result)) {
+                Debug.logInfo("Successfully applied feature [" + productFeatureId + "] to product [" + partNumber + "]", MODULE);
+            } else {
+                Debug.logError("Error applying feature to product: " + result.get("errorMessage"), MODULE);
+            }
+        } catch (GenericServiceException e) {
+            Debug.logError("Exception during applyFeatureToProduct: " + e.getMessage(), MODULE);
         }
     }
 
