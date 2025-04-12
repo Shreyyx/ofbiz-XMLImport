@@ -390,6 +390,7 @@ public class XmlParsing {
                     case "Representation":
                     case "Background":
                     case "OrientationView":
+                    case "URI":
                         currentDigitalAsset.put(tagName, getCharacterData(reader));
                         break;
 
@@ -560,7 +561,7 @@ public class XmlParsing {
                             String orientationView = digitalAssetInfo.getOrDefault("OrientationView", "");
                             String assetHeight = digitalAssetInfo.getOrDefault("AssetHeight", "");
                             String assetWidth = digitalAssetInfo.getOrDefault("AssetWidth", "");
-                            String uri = digitalAssetInfo.getOrDefault("uri", "");
+                            String uri = digitalAssetInfo.getOrDefault("URI", "");
                             String FileType = digitalAssetInfo.getOrDefault("FileType", "");
                             createDataResourceAttribute(dctx, AssetType, representation, background, orientationView, assetHeight, assetWidth, partNumber, userLogin);
                             createDigitalAssets(dctx, languageCode, FileName, FileType, uri, partNumber, userLogin);
