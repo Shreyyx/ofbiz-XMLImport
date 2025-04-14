@@ -499,13 +499,7 @@ public class XmlParsing {
         return partInterchangeList;
     }
 
-    private static Map<String, Object> createItem(DispatchContext dctx, String partNumber, String itemQuantitySize,
-                                                  String quantityPerApplication, String minimumOrderQuantity, String itemLevelGTIN, String brandAAIAID,
-                                                  String brandLabel, String partTerminologyID, String subBrandAAIAID, String subBrandLabel,
-                                                  List<Map<String, String>> descriptions, List<Map<String, String>> extendedInformation,
-                                                  List<Map<String, String>> productAttributes, List<Map<String, String>> packageDetails,
-                                                  List<Map<String, String>> priceDetail, List<Map<String, String>> digitalAssetDetail,
-                                                  List<Map<String, String>> partInterchangeDetail, GenericValue userLogin) {
+    private static Map<String, Object> createItem(DispatchContext dctx, String partNumber, String itemQuantitySize, String quantityPerApplication, String minimumOrderQuantity, String itemLevelGTIN, String brandAAIAID, String brandLabel, String partTerminologyID, String subBrandAAIAID, String subBrandLabel, List<Map<String, String>> descriptions, List<Map<String, String>> extendedInformation, List<Map<String, String>> productAttributes, List<Map<String, String>> packageDetails, List<Map<String, String>> priceDetail, List<Map<String, String>> digitalAssetDetail, List<Map<String, String>> partInterchangeDetail, GenericValue userLogin) {
 
         Map<String, Object> response = new HashMap<>();
         try {
@@ -527,6 +521,7 @@ public class XmlParsing {
             if (existingProduct != null) {
                 Debug.logInfo("Product exists. Updating product: " + partNumber, MODULE);
                 Map<String, Object> updateResult = dctx.getDispatcher().runSync("updateProduct", productParams);
+                updateItemLevelGTIN(dctx, partNumber, itemLevelGTIN, userLogin);
                 if (ServiceUtil.isSuccess(updateResult)) {
                     Debug.logInfo("Product updated successfully: " + partNumber, MODULE);
                 } else {
@@ -675,6 +670,43 @@ public class XmlParsing {
         }
     }
 
+    private static void updateItemLevelGTIN(DispatchContext dctx, String partNumber, String itemLevelGTIN, GenericValue userLogin) {
+        try {
+            GenericValue existingGTIN = null;
+            try {
+                existingGTIN = EntityQuery.use(dctx.getDelegator())
+                        .from("GoodIdentification")
+                        .where("productId", partNumber, "goodIdentificationTypeId", "GTIN")
+                        .queryFirst();
+            } catch (GenericEntityException e) {
+                Debug.logError("Error querying existing GTIN: " + e.getMessage(), MODULE);
+                return;
+            }
+
+            if (existingGTIN == null) {
+                Debug.logWarning("No GTIN found for product: " + partNumber + ". Cannot update.", MODULE);
+                return;
+            }
+
+            Map<String, Object> updateFields = UtilMisc.toMap(
+                    "goodIdentificationTypeId", "GTIN",
+                    "productId", partNumber,
+                    "idValue", itemLevelGTIN,
+                    "userLogin", userLogin
+            );
+
+            Map<String, Object> result = dctx.getDispatcher().runSync("updateGoodIdentification", updateFields);
+
+            if (ServiceUtil.isSuccess(result)) {
+                Debug.logInfo("GTIN updated for product: " + partNumber, MODULE);
+            } else {
+                Debug.logError("Failed to update GTIN for product: " + partNumber + ". Error: " + result.get("errorMessage"), MODULE);
+            }
+
+        } catch (GenericServiceException e) {
+            Debug.logError("Exception in updateItemLevelGTIN: " + e.getMessage(), MODULE);
+        }
+    }
 
     public static void createProductCategory(DispatchContext dctx, String brandAAIAID, String brandLabel, String partTerminologyID, String subBrandAAIAID, String subBrandLabel, String partNumber, GenericValue userLogin) {
         Delegator delegator = dctx.getDelegator();
