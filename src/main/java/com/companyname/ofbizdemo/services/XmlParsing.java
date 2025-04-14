@@ -499,8 +499,13 @@ public class XmlParsing {
         return partInterchangeList;
     }
 
-    private static Map<String, Object> createItem(DispatchContext dctx, String partNumber, String itemQuantitySize, String quantityPerApplication, String minimumOrderQuantity, String itemLevelGTIN, String brandAAIAID, String brandLabel, String partTerminologyID, String subBrandAAIAID, String subBrandLabel, List<Map<String, String>> descriptions, List<Map<String, String>> extendedInformation, List<Map<String, String>> productAttributes, List<Map<String, String>> packageDetails, List<Map<String, String>> priceDetail, List<Map<String, String>> digitalAssetDetail, List<Map<String, String>> partInterchangeDetail,
-            GenericValue userLogin) {
+    private static Map<String, Object> createItem(DispatchContext dctx, String partNumber, String itemQuantitySize,
+                                                  String quantityPerApplication, String minimumOrderQuantity, String itemLevelGTIN, String brandAAIAID,
+                                                  String brandLabel, String partTerminologyID, String subBrandAAIAID, String subBrandLabel,
+                                                  List<Map<String, String>> descriptions, List<Map<String, String>> extendedInformation,
+                                                  List<Map<String, String>> productAttributes, List<Map<String, String>> packageDetails,
+                                                  List<Map<String, String>> priceDetail, List<Map<String, String>> digitalAssetDetail,
+                                                  List<Map<String, String>> partInterchangeDetail, GenericValue userLogin) {
 
         Map<String, Object> response = new HashMap<>();
         try {
@@ -508,21 +513,30 @@ public class XmlParsing {
                     .from("Product")
                     .where("productId", partNumber)
                     .queryOne();
+
+            Map<String, Object> productParams = UtilMisc.toMap(
+                    "productId", partNumber,
+                    "productTypeId", "FINISHED_GOOD",
+                    "internalName", partNumber,
+                    "piecesIncluded", itemQuantitySize,
+                    "quantityIncluded", quantityPerApplication,
+                    "orderDecimalQuantity", minimumOrderQuantity,
+                    "userLogin", userLogin
+            );
+
             if (existingProduct != null) {
-                Debug.logWarning("Product already exists: " + partNumber, MODULE);
+                Debug.logInfo("Product exists. Updating product: " + partNumber, MODULE);
+                Map<String, Object> updateResult = dctx.getDispatcher().runSync("updateProduct", productParams);
+                if (ServiceUtil.isSuccess(updateResult)) {
+                    Debug.logInfo("Product updated successfully: " + partNumber, MODULE);
+                } else {
+                    Debug.logError("Failed to update product: " + ServiceUtil.getErrorMessage(updateResult), MODULE);
+                    return response;
+                }
             } else {
-                Map<String, Object> productParams = UtilMisc.toMap(
-                        "productId", partNumber,
-                        "productTypeId", "FINISHED_GOOD",
-                        "internalName", partNumber,
-                        "piecesIncluded", itemQuantitySize,
-                        "quantityIncluded", quantityPerApplication,
-                        "orderDecimalQuantity", minimumOrderQuantity,
-                        "userLogin", userLogin
-                );
-                Debug.logInfo("Creating new product: " + productParams, MODULE);
-                Map<String, Object> result = dctx.getDispatcher().runSync("createProduct", productParams);
-                if (ServiceUtil.isSuccess(result)) {
+                Debug.logInfo("Creating new product: " + partNumber, MODULE);
+                Map<String, Object> createResult = dctx.getDispatcher().runSync("createProduct", productParams);
+                if (ServiceUtil.isSuccess(createResult)) {
                     Debug.logInfo("Product created successfully: " + partNumber, MODULE);
                     createItemLevelGTIN(dctx, partNumber, itemLevelGTIN, userLogin);
                     createProductCategory(dctx, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, partNumber, userLogin);
@@ -576,7 +590,7 @@ public class XmlParsing {
                             String interchangeQuantity = interchangeInfo.getOrDefault("InterchangeQuantity", "");
                             String productId = interchangeInfo.getOrDefault("productId", "");
                             createPartInterchangeInfo(dctx, partBrandAAIAID, partBrandLabel, interchangeQuantity, partNumberTo, itemEquivalentUOM,  productId, userLogin);
-                            }
+                        }
                     }
                     if(productAttributes!=null) {
                         for (Map<String, String> attrInfo : productAttributes) {
@@ -589,16 +603,15 @@ public class XmlParsing {
                         createPackages(dctx, packageDetails, userLogin);
                     }
                 } else {
-                    Debug.logError("Failed to create product: " + result.get("errorMessage"), MODULE);
-                    response.put("status", "error");
-                    response.put("message", "Product creation failed: " + result.get("errorMessage"));
+                    Debug.logError("Failed to create product: " + ServiceUtil.getErrorMessage(createResult), MODULE);
+                    return response;
                 }
             }
-        } catch (Exception e) {
-            Debug.logError("Error creating product: " + e.getMessage(), MODULE);
-            response.put("status", "error");
-            response.put("message", "Exception: " + e.getMessage());
+        } catch (GenericServiceException | GenericEntityException e) {
+            Debug.logError(e, "Error in createItem for partNumber: " + partNumber, MODULE);
+            return response;
         }
+
         return response;
     }
 
