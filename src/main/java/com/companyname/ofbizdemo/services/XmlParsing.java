@@ -522,6 +522,8 @@ public class XmlParsing {
                 Debug.logInfo("Product exists. Updating product: " + partNumber, MODULE);
                 Map<String, Object> updateResult = dctx.getDispatcher().runSync("updateProduct", productParams);
                 updateItemLevelGTIN(dctx, partNumber, itemLevelGTIN, userLogin);
+                updateProductCategory(dctx, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, partNumber, userLogin);
+
                 if (ServiceUtil.isSuccess(updateResult)) {
                     Debug.logInfo("Product updated successfully: " + partNumber, MODULE);
                 } else {
@@ -913,6 +915,108 @@ public class XmlParsing {
 
         } catch (GenericEntityException e) {
             Debug.logError(e, "Entity error while creating ProductCategoryRollup", MODULE);
+        }
+    }
+
+    public static void updateProductCategory(DispatchContext dctx, String brandAAIAID, String brandLabel, String partTerminologyID, String subBrandAAIAID, String subBrandLabel, String partNumber, GenericValue userLogin) {
+        Delegator delegator = dctx.getDelegator();
+        LocalDispatcher dispatcher = dctx.getDispatcher();
+
+        boolean brandUpdated = false;
+        boolean subBrandUpdated = false;
+        boolean partTerminologyUpdated = false;
+
+        try {
+            GenericValue existingBrandCategory = EntityQuery.use(delegator)
+                    .from("ProductCategory")
+                    .where("categoryName", brandAAIAID, "productCategoryTypeId", "BRAND_CATEGORY")
+                    .queryFirst();
+
+            if (existingBrandCategory != null) {
+                String existingDescription = existingBrandCategory.getString("description");
+                String categoryId = existingBrandCategory.getString("productCategoryId");
+                Debug.logInfo("1. Updated BRAND_CATEGORY with ID: " + categoryId+" and brandLabel: "+ brandLabel, MODULE);
+                if (!Objects.equals(existingDescription, brandLabel)) {
+                    Map<String, Object> updateBrandCtx = UtilMisc.toMap(
+                            "productCategoryId", categoryId,
+                            "productCategoryTypeId", "BRAND_CATEGORY",
+                            "description", brandLabel,
+                            "userLogin", userLogin
+                    );
+                    Debug.logInfo("2. Updated BRAND_CATEGORY with ID: " + categoryId+" and brandLabel: "+ brandLabel, MODULE);
+                    Map<String, Object> updateResult = dispatcher.runSync("updateProductCategory", updateBrandCtx);
+                    if (ServiceUtil.isSuccess(updateResult)) {
+                        Debug.logInfo("Updated BRAND_CATEGORY with ID: " + categoryId+" and brandLabel: "+ brandLabel, MODULE);
+                    } else {
+                        Debug.logError("Failed to update BRAND_CATEGORY: " + updateResult.get("errorMessage"), MODULE);
+                    }
+                }
+                brandUpdated = true;
+            }
+            if (UtilValidate.isNotEmpty(subBrandAAIAID) && UtilValidate.isNotEmpty(subBrandLabel)) {
+                GenericValue existingSubBrandCategory = EntityQuery.use(delegator)
+                        .from("ProductCategory")
+                        .where("categoryName", subBrandAAIAID, "productCategoryTypeId", "SUBBRAND_CATEGORY")
+                        .queryFirst();
+
+                if (existingSubBrandCategory != null) {
+                    String existingDescription = existingSubBrandCategory.getString("description");
+                    String categoryId = existingSubBrandCategory.getString("productCategoryId");
+
+                    if (!Objects.equals(existingDescription, subBrandLabel)) {
+                        Map<String, Object> updateSubCtx = UtilMisc.toMap(
+                                "productCategoryId", categoryId,
+                                "productCategoryTypeId","SUBBRAND_CATEGORY",
+                                "description", subBrandLabel,
+                                "userLogin", userLogin
+                        );
+                        Map<String, Object> updateResult = dispatcher.runSync("updateProductCategory", updateSubCtx);
+                        if (ServiceUtil.isSuccess(updateResult)) {
+                            Debug.logInfo("Updated SUBBRAND_CATEGORY with ID: " + categoryId, MODULE);
+                        } else {
+                            Debug.logError("Failed to update SUBBRAND_CATEGORY: " + updateResult.get("errorMessage"), MODULE);
+                        }
+                    }
+                    subBrandUpdated = true;
+                }
+            }
+            if (UtilValidate.isNotEmpty(partTerminologyID)) {
+                GenericValue existingPartCategory = EntityQuery.use(delegator)
+                        .from("ProductCategory")
+                        .where("categoryName", partTerminologyID, "productCategoryTypeId", "PART_TERMINOLOGY")
+                        .queryFirst();
+
+                if (existingPartCategory != null) {
+                    String existingDescription = existingPartCategory.getString("description");
+                    String categoryId = existingPartCategory.getString("productCategoryId");
+
+                    if (!Objects.equals(existingDescription, partTerminologyID)) {
+                        Map<String, Object> updatePartCtx = UtilMisc.toMap(
+                                "productCategoryId", categoryId,
+                                "productCategoryTypeId", "PART_TERMINOLOGY",
+                                "description", partTerminologyID,
+                                "userLogin", userLogin
+                        );
+                        Map<String, Object> updateResult = dispatcher.runSync("updateProductCategory", updatePartCtx);
+                        if (ServiceUtil.isSuccess(updateResult)) {
+                            Debug.logInfo("Updated PART_TERMINOLOGY with ID: " + categoryId, MODULE);
+                        } else {
+                            Debug.logError("Failed to update PART_TERMINOLOGY: " + updateResult.get("errorMessage"), MODULE);
+                        }
+                    }
+                    partTerminologyUpdated = true;
+                }
+            }
+
+//            if (!brandUpdated || !subBrandUpdated || !partTerminologyUpdated) {
+//                Debug.logInfo("One or more categories not found, calling createProductCategory", MODULE);
+//                createProductCategory(dctx, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, partNumber, userLogin);
+//            }
+
+        } catch (GenericServiceException e) {
+            Debug.logError("Service exception in updateProductCategoryIfExistsOrCreate: " + e.getMessage(), MODULE);
+        } catch (Exception e) {
+            Debug.logError("Unexpected error in updateProductCategoryIfExistsOrCreate: " + e.getMessage(), MODULE);
         }
     }
 
