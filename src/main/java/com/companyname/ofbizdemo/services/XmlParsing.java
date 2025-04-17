@@ -524,6 +524,13 @@ public class XmlParsing {
                 updateItemLevelGTIN(dctx, partNumber, itemLevelGTIN, userLogin);
                 updateProductCategory(dctx, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, partNumber, userLogin);
 
+                if (extendedInformation != null) {
+                    for (Map<String, String> extInfo : extendedInformation) {
+                        String expiCode = extInfo.getOrDefault("EXPICode", "");
+                        String finalExtendedProductInformationText = extInfo.getOrDefault("ExtendedProductInformation", "");
+                        updateExtendedProductInformation(dctx, expiCode, finalExtendedProductInformationText, partNumber, userLogin);
+                    }
+                }
                 if (ServiceUtil.isSuccess(updateResult)) {
                     Debug.logInfo("Product updated successfully: " + partNumber, MODULE);
                 } else {
@@ -935,7 +942,6 @@ public class XmlParsing {
             if (existingBrandCategory != null) {
                 String existingDescription = existingBrandCategory.getString("description");
                 String categoryId = existingBrandCategory.getString("productCategoryId");
-                Debug.logInfo("1. Updated BRAND_CATEGORY with ID: " + categoryId+" and brandLabel: "+ brandLabel, MODULE);
                 if (!Objects.equals(existingDescription, brandLabel)) {
                     Map<String, Object> updateBrandCtx = UtilMisc.toMap(
                             "productCategoryId", categoryId,
@@ -943,7 +949,6 @@ public class XmlParsing {
                             "description", brandLabel,
                             "userLogin", userLogin
                     );
-                    Debug.logInfo("2. Updated BRAND_CATEGORY with ID: " + categoryId+" and brandLabel: "+ brandLabel, MODULE);
                     Map<String, Object> updateResult = dispatcher.runSync("updateProductCategory", updateBrandCtx);
                     if (ServiceUtil.isSuccess(updateResult)) {
                         Debug.logInfo("Updated BRAND_CATEGORY with ID: " + categoryId+" and brandLabel: "+ brandLabel, MODULE);
@@ -952,6 +957,9 @@ public class XmlParsing {
                     }
                 }
                 brandUpdated = true;
+            }
+            else {
+                createProductCategory(dctx, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, partNumber, userLogin);
             }
             if (UtilValidate.isNotEmpty(subBrandAAIAID) && UtilValidate.isNotEmpty(subBrandLabel)) {
                 GenericValue existingSubBrandCategory = EntityQuery.use(delegator)
@@ -978,6 +986,9 @@ public class XmlParsing {
                         }
                     }
                     subBrandUpdated = true;
+                }
+                else {
+                    createProductCategory(dctx, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, partNumber, userLogin);
                 }
             }
             if (UtilValidate.isNotEmpty(partTerminologyID)) {
@@ -1006,13 +1017,10 @@ public class XmlParsing {
                     }
                     partTerminologyUpdated = true;
                 }
+                else {
+                    createProductCategory(dctx, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, partNumber, userLogin);
+                }
             }
-
-//            if (!brandUpdated || !subBrandUpdated || !partTerminologyUpdated) {
-//                Debug.logInfo("One or more categories not found, calling createProductCategory", MODULE);
-//                createProductCategory(dctx, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, partNumber, userLogin);
-//            }
-
         } catch (GenericServiceException e) {
             Debug.logError("Service exception in updateProductCategoryIfExistsOrCreate: " + e.getMessage(), MODULE);
         } catch (Exception e) {
@@ -1162,6 +1170,59 @@ public class XmlParsing {
             }
         } catch (GenericServiceException e) {
             Debug.logError("Exception during applyFeatureToProduct: " + e.getMessage(), MODULE);
+        }
+    }
+
+    public static void updateExtendedProductInformation(DispatchContext dctx, String expiCode, String finalExtendedProductInformationText, String partNumber, GenericValue userLogin) {
+        Delegator delegator = dctx.getDelegator();
+        LocalDispatcher dispatcher = dctx.getDispatcher();
+
+        try {
+            GenericValue productFeature = EntityQuery.use(delegator)
+                    .from("ProductFeature")
+                    .where("productFeatureTypeId", "EXPI", "idCode", expiCode)
+                    .queryFirst();
+
+            if (productFeature != null) {
+                String productFeatureId = productFeature.getString("productFeatureId");
+
+                GenericValue featureAppl = EntityQuery.use(delegator)
+                        .from("ProductFeatureAppl")
+                        .where("productId", partNumber, "productFeatureId", productFeatureId)
+                        .queryFirst();
+
+                if (featureAppl != null) {
+                    String existingDescription = productFeature.getString("description");
+
+                    if (!Objects.equals(existingDescription, finalExtendedProductInformationText)) {
+                        Map<String, Object> updateParams = UtilMisc.toMap(
+                                "productFeatureId", productFeatureId,
+                                "productFeatureTypeId", "EXPI",
+                                "description", finalExtendedProductInformationText,
+                                "userLogin", userLogin
+                        );
+
+                        Map<String, Object> updateResult = dispatcher.runSync("updateProductFeature", updateParams);
+
+                        if (ServiceUtil.isSuccess(updateResult)) {
+                            Debug.logInfo("Updated ProductFeature for productFeatureId: " + productFeatureId + ", idCode: " + expiCode, MODULE);
+                        } else {
+                            Debug.logError("Failed to update ProductFeature: " + updateResult.get("errorMessage"), MODULE);
+                        }
+                    } else {
+                        Debug.logInfo("ProductFeature already has the same description: " + productFeatureId, MODULE);
+                    }
+                } else {
+                    Debug.logWarning("ProductFeature found but not applied to productId: " + partNumber, MODULE);
+                }
+            } else {
+                Debug.logWarning("No ProductFeature found for idCode: " + expiCode + " and type: EXPI", MODULE);
+            }
+
+        } catch (GenericServiceException | GenericEntityException e) {
+            Debug.logError("Exception in updateExtendedProductInformation: " + e.getMessage(), MODULE);
+        } catch (Exception e) {
+            Debug.logError("Unexpected error in updateExtendedProductInformation: " + e.getMessage(), MODULE);
         }
     }
 
