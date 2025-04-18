@@ -524,11 +524,55 @@ public class XmlParsing {
                 updateItemLevelGTIN(dctx, partNumber, itemLevelGTIN, userLogin);
                 updateProductCategory(dctx, brandAAIAID, brandLabel, partTerminologyID, subBrandAAIAID, subBrandLabel, partNumber, userLogin);
 
+                if (descriptions != null) {
+                    for (Map<String, String> desc : descriptions) {
+                        String languageCode = desc.getOrDefault("LanguageCode", "");
+                        String descriptionCode = desc.getOrDefault("DescriptionCode", "");
+                        String finalText = desc.getOrDefault("Description", "");
+                        updateDescription(dctx, descriptionCode, languageCode, finalText, partNumber, userLogin);
+                    }
+                }
+
                 if (extendedInformation != null) {
                     for (Map<String, String> extInfo : extendedInformation) {
                         String expiCode = extInfo.getOrDefault("EXPICode", "");
                         String finalExtendedProductInformationText = extInfo.getOrDefault("ExtendedProductInformation", "");
                         updateExtendedProductInformation(dctx, expiCode, finalExtendedProductInformationText, partNumber, userLogin);
+                    }
+                }
+//                if (packageDetails != null) {
+//                    updatePackages(dctx, packageDetails, partNumber, userLogin);
+//                }
+                if (digitalAssetDetail != null) {
+                    for (Map<String, String> digitalAssetInfo : digitalAssetDetail) {
+                        String languageCode = digitalAssetInfo.getOrDefault("LanguageCode", "");
+                        String FileName = digitalAssetInfo.getOrDefault("FileName", "");
+                        String assetType = digitalAssetInfo.getOrDefault("AssetType", "");
+                        String representation = digitalAssetInfo.getOrDefault("Representation", "");
+                        String background = digitalAssetInfo.getOrDefault("Background", "");
+                        String orientationView = digitalAssetInfo.getOrDefault("OrientationView", "");
+                        String assetHeight = digitalAssetInfo.getOrDefault("AssetHeight", "");
+                        String assetWidth = digitalAssetInfo.getOrDefault("AssetWidth", "");
+                        String FileType = digitalAssetInfo.getOrDefault("FileType", "");
+                        String uri = digitalAssetInfo.getOrDefault("URI", "");
+
+                        GenericValue existingResource = EntityQuery.use(dctx.getDelegator())
+                                .from("DataResource")
+                                .where("dataResourceName", FileName)
+                                .queryFirst();
+                        if (existingResource != null) {
+                            String dataResourceId = existingResource.getString("dataResourceId");
+                            Map<String, String> attributes = new HashMap<>();
+                            attributes.put("AssetType", assetType);
+                            attributes.put("Representation", representation);
+                            attributes.put("Background", background);
+                            attributes.put("OrientationView", orientationView);
+                            attributes.put("AssetHeight", assetHeight);
+                            attributes.put("AssetWidth", assetWidth);
+                            updateDigitalAsset(dctx, languageCode, FileName, FileType, uri, partNumber, assetType, representation, background, orientationView, assetHeight, assetWidth, userLogin);
+                        } else {
+                            Debug.logWarning("No DataResource found for fileName: " + FileName, MODULE);
+                        }
                     }
                 }
                 if (ServiceUtil.isSuccess(updateResult)) {
@@ -604,7 +648,7 @@ public class XmlParsing {
                         }
                     }
                     if (packageDetails != null) {
-                        createPackages(dctx, packageDetails, userLogin);
+                        createPackages(dctx, packageDetails, partNumber, userLogin);
                     }
                 } else {
                     Debug.logError("Failed to create product: " + ServiceUtil.getErrorMessage(createResult), MODULE);
@@ -1095,6 +1139,80 @@ public class XmlParsing {
         }
     }
 
+    private static void updateDescription(DispatchContext dctx, String descriptionCode, String languageCode, String finalText, String partNumber, GenericValue userLogin) throws GenericServiceException {
+        Delegator delegator = dctx.getDelegator();
+        try {
+            GenericValue existingContent = EntityQuery.use(delegator)
+                    .from("Content")
+                    .where("contentName", descriptionCode)
+                    .queryFirst();
+
+            if (existingContent != null) {
+                GenericValue existingProductContent = EntityQuery.use(delegator)
+                        .from("ProductContent")
+                        .where("productId", partNumber, "contentId", existingContent.getString("contentId"))
+                        .queryFirst();
+
+                if (existingProductContent != null) {
+                    String existingDescription = existingContent.getString("description");
+
+                    if (UtilValidate.isEmpty(finalText) || !finalText.equals(existingDescription)) {
+                        if (finalText.length() > 255) {
+                            GenericValue existingElectronicText = EntityQuery.use(delegator)
+                                    .from("ElectronicText")
+                                    .where("dataResourceId", existingContent.getString("dataResourceId"))
+                                    .queryFirst();
+
+                            if (existingElectronicText != null) {
+                                existingElectronicText.set("textData", finalText);
+                                existingElectronicText.store();
+
+                                Debug.logInfo("ElectronicText updated successfully with new textData for ContentId: " + existingContent.getString("contentId"), MODULE);
+                                Map<String, Object> updateElectronicTextParams = UtilMisc.toMap(
+                                        "dataResourceId", existingElectronicText.getString("dataResourceId"),
+                                        "textData", finalText,
+                                        "userLogin", userLogin
+                                );
+                                Map<String, Object> updateElectronicTextResult = dctx.getDispatcher().runSync("updateElectronicText", updateElectronicTextParams);
+                                if (ServiceUtil.isSuccess(updateElectronicTextResult)) {
+                                    Debug.logInfo("ElectronicText service updated successfully for ContentId: " + existingContent.getString("contentId"), MODULE);
+                                } else {
+                                    Debug.logError("Failed to update ElectronicText service: " + updateElectronicTextResult.get("errorMessage"), MODULE);
+                                }
+                            } else {
+                                Debug.logError("No matching ElectronicText found for ContentId: " + existingContent.getString("contentId"), MODULE);
+                            }
+                        } else {
+                            existingContent.set("description", finalText);
+                            existingContent.store();
+
+                            Debug.logInfo("Content updated successfully with new description for ContentId: " + existingContent.getString("contentId"), MODULE);
+                            Map<String, Object> updateContentParams = UtilMisc.toMap(
+                                    "contentId", existingContent.getString("contentId"),
+                                    "description", finalText,
+                                    "userLogin", userLogin
+                            );
+                            Map<String, Object> updateContentResult = dctx.getDispatcher().runSync("updateContent", updateContentParams);
+                            if (ServiceUtil.isSuccess(updateContentResult)) {
+                                Debug.logInfo("Content service updated successfully for ContentId: " + existingContent.getString("contentId"), MODULE);
+                            } else {
+                                Debug.logError("Failed to update Content service: " + updateContentResult.get("errorMessage"), MODULE);
+                            }
+                        }
+                    } else {
+                        Debug.logInfo("Description is the same as the existing one. No update needed for PartNumber: " + partNumber + " and DescriptionCode: " + descriptionCode, MODULE);
+                    }
+                } else {
+                    Debug.logError("No matching ProductContent record found for PartNumber: " + partNumber + " and DescriptionCode: " + descriptionCode, MODULE);
+                }
+            } else {
+                Debug.logError("No matching Content record found for DescriptionCode: " + descriptionCode + " and LanguageCode: " + languageCode, MODULE);
+            }
+        } catch (GenericEntityException e) {
+            Debug.logError("Error updating description: " + e.getMessage(), MODULE);
+        }
+    }
+
     public static void storeExtendedProductInformation(DispatchContext dctx, String expiCode, String finalExtendedProductInformationText, String partNumber, GenericValue userLogin) {
 
         Delegator delegator = dctx.getDelegator();
@@ -1253,7 +1371,7 @@ public class XmlParsing {
         }
     }
 
-    public static void createPackages(DispatchContext dctx, List<Map<String, String>> packages, GenericValue userLogin) {
+    public static void createPackages(DispatchContext dctx, List<Map<String, String>> packages, String partNumber, GenericValue userLogin) {
         Delegator delegator = dctx.getDelegator();
 
         try {
@@ -1303,6 +1421,7 @@ public class XmlParsing {
                     Map<String, Object> result = dctx.getDispatcher().runSync("createProductFeature", featureCtx);
                     if (ServiceUtil.isSuccess(result)) {
                         Debug.logInfo("Created ProductFeature: " + tagName + " = " + tagValue, MODULE);
+                        applyFeatureToProduct(dctx, partNumber, productFeatureId, userLogin);
                     } else {
                         Debug.logError("Failed to create ProductFeature for " + tagName + ": " + result.get("errorMessage"), MODULE);
                     }
@@ -1312,6 +1431,74 @@ public class XmlParsing {
             Debug.logError("Exception while creating package features: " + e.getMessage(), MODULE);
         }
     }
+
+//    public static void updatePackages(DispatchContext dctx, List<Map<String, String>> packages, String partNumber, GenericValue userLogin) {
+//        Delegator delegator = dctx.getDelegator();
+//
+//        try {
+//            GenericValue productFeatureCategory = EntityQuery.use(delegator)
+//                    .from("ProductFeatureCategory")
+//                    .where("productFeatureCategoryId", "PACKAGE")
+//                    .queryOne();
+//            if (productFeatureCategory == null) {
+//                Debug.logWarning("ProductFeatureCategory 'PACKAGE' does not exist. Skipping update.", MODULE);
+//                return;
+//            }
+//            for (Map<String, String> pkg : packages) {
+//                for (Map.Entry<String, String> entry : pkg.entrySet()) {
+//                    String tagName = entry.getKey();
+//                    String tagValue = entry.getValue();
+//
+//                    if (UtilValidate.isEmpty(tagValue))
+//                        continue;
+//
+//                    GenericValue existingFeature = EntityQuery.use(delegator)
+//                            .from("ProductFeature")
+//                            .where("productFeatureCategoryId", "PACKAGE", "description", tagName)
+//                            .queryFirst();
+//
+//                    if (existingFeature != null) {
+//                        String productFeatureId = existingFeature.getString("productFeatureId");
+//                        String existingValue = existingFeature.getString("numberSpecified");
+//
+//                        if (!Objects.equals(existingValue, tagValue)) {
+//                            Map<String, Object> updateCtx = new HashMap<>();
+//                            updateCtx.put("productFeatureId", productFeatureId);
+//                            updateCtx.put("productFeatureTypeId", existingFeature.getString("productFeatureTypeId"));
+//                            updateCtx.put("productFeatureCategoryId", "PACKAGE");
+//                            updateCtx.put("description", tagName);
+//                            updateCtx.put("numberSpecified", tagValue);
+//                            updateCtx.put("userLogin", userLogin);
+//
+//                            Map<String, Object> result = dctx.getDispatcher().runSync("updateProductFeature", updateCtx);
+//                            if (ServiceUtil.isSuccess(result)) {
+//                                Debug.logInfo("Updated ProductFeature: " + tagName + " = " + tagValue+" and featureId: "+ productFeatureId, MODULE);
+//                            } else {
+//                                Debug.logError("Failed to update ProductFeature for " + tagName + ": " + result.get("errorMessage"), MODULE);
+//                            }
+//                        } else {
+//                            Debug.logInfo("No change for ProductFeature: " + tagName + ". Skipping update.", MODULE);
+//                        }
+//                        GenericValue appl = EntityQuery.use(delegator)
+//                                .from("ProductFeatureAppl")
+//                                .where("productId", partNumber, "productFeatureId", productFeatureId)
+//                                .queryFirst();
+//
+//                        if (appl == null) {
+//                            applyFeatureToProduct(dctx, partNumber, productFeatureId, userLogin);
+//                            Debug.logInfo("Applied existing ProductFeature to product: " + partNumber, MODULE);
+//                        }
+//
+//                    } else {
+//                        Debug.logWarning("ProductFeature not found for tag: " + tagName + " under category 'PACKAGE'. Consider creating it first.", MODULE);
+//                    }
+//                }
+//            }
+//
+//        } catch (Exception e) {
+//            Debug.logError("Exception while updating package features: " + e.getMessage(), MODULE);
+//        }
+//    }
 
     private static void createPrices(DispatchContext dctx, String partNumber, String priceType, String price, GenericValue userLogin) {
         Delegator delegator = dctx.getDelegator();
@@ -1519,6 +1706,71 @@ public class XmlParsing {
             Debug.logError(e, "ServiceException while creating Content and ProductContent", MODULE);
         } catch (Exception e) {
             Debug.logError(e, "Unexpected error while creating Content and ProductContent", MODULE);
+        }
+    }
+
+    private static void updateDigitalAsset(DispatchContext dctx, String languageCode, String fileName, String fileType, String uri, String partNumber, String assetType, String representation, String background, String orientationView, String assetHeight, String assetWidth, GenericValue userLogin) {
+        Delegator delegator = dctx.getDelegator();
+        LocalDispatcher dispatcher = dctx.getDispatcher();
+
+        try {
+            GenericValue existingDataResource = EntityQuery.use(delegator)
+                    .from("DataResource")
+                    .where("dataResourceName", fileName)
+                    .queryFirst();
+
+            if (existingDataResource == null) {
+                Debug.logError("DataResource not found for name: " + fileName, MODULE);
+                return;
+            }
+            String dataResourceId = existingDataResource.getString("dataResourceId");
+            Map<String, Object> updateAssetCtx = UtilMisc.toMap(
+                    "dataResourceId", dataResourceId,
+                    "fileName", fileName,
+                    "mimeTypeId", fileType,
+                    "objectInfo", uri,
+                    "localeString", languageCode,
+                    "userLogin", userLogin
+            );
+
+            Map<String, Object> result = dispatcher.runSync("updateDigitalAsset", updateAssetCtx);
+
+            if (ServiceUtil.isSuccess(result)) {
+                Debug.logInfo("Successfully updated digital asset with ID: " + dataResourceId, MODULE);
+            } else {
+                Debug.logError("Failed to update digital asset: " + result.get("errorMessage"), MODULE);
+                return;
+            }
+//            Map<String, String> attributes = new HashMap<>();
+//            attributes.put("AssetType", assetType);
+//            attributes.put("Representation", representation);
+//            attributes.put("Background", background);
+//            attributes.put("OrientationView", orientationView);
+//            attributes.put("AssetHeight", assetHeight);
+//            attributes.put("AssetWidth", assetWidth);
+//
+//            for (Map.Entry<String, String> entry : attributes.entrySet()) {
+//                String attrName = entry.getKey();
+//                String attrValue = entry.getValue();
+//                if (UtilValidate.isEmpty(attrValue)) continue;
+//
+//                GenericValue existingAttr = EntityQuery.use(delegator)
+//                        .from("DataResourceAttribute")
+//                        .where("dataResourceId", dataResourceId, "attrName", attrName)
+//                        .queryFirst();
+//
+//                if (existingAttr == null) {
+//                    createDataResourceAttribute(dctx, assetType, representation, background, orientationView, assetHeight, assetWidth, partNumber, userLogin);
+//                    break;
+//                } else if (!attrValue.equals(existingAttr.getString("attrValue"))) {
+//                    existingAttr.set("attrValue", attrValue);
+//                    existingAttr.store();
+//                    Debug.logInfo("Updated DataResourceAttribute: " + attrName + " to " + attrValue, MODULE);
+//                }
+//            }
+
+        } catch (GenericEntityException | GenericServiceException e) {
+            Debug.logError(e, "Error while updating digital asset details", MODULE);
         }
     }
 

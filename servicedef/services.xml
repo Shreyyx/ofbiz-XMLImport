@@ -37,4 +37,15 @@ under the License.
         <attribute name="itemCount" type="Integer" mode="OUT"/>
         <attribute name="itemsList" type="List" mode="OUT"/>
     </service>
+    <service name="updateDigitalAsset" engine="java"
+             location="com.companyname.ofbizdemo.services.DigitalAssetService"
+             invoke="updateDigitalAsset"
+             auth="true">
+        <attribute name="dataResourceId" type="String" mode="IN" optional="false"/>
+        <attribute name="fileName" type="String" mode="IN" optional="false"/>
+        <attribute name="mimeTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="objectInfo" type="String" mode="IN" optional="true"/>
+        <attribute name="localeString" type="String" mode="IN" optional="true"/>
+    </service>
+
 </services>
