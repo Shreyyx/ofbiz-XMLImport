@@ -541,6 +541,15 @@ public class XmlParsing {
                     }
                 }
 
+                if (priceDetail != null) {
+                    for (Map<String, String> priceInfo : priceDetail) {
+                        String priceType = priceInfo.getOrDefault("PriceType", "");
+                        String currencyCode = priceInfo.getOrDefault("CurrencyCode", "");
+                        String price = priceInfo.getOrDefault("Price", "");
+                        createPrices(dctx, partNumber, priceType, price, userLogin);
+                    }
+                }
+
                 if (productAttributes != null) {
                     for (Map<String, String> attrInfo : productAttributes) {
                         String attributeId = attrInfo.getOrDefault("AttributeID", "");
@@ -1594,6 +1603,39 @@ public class XmlParsing {
             Debug.logInfo("Product Price created successfully for PartNumber: " + partNumber, MODULE);
         } catch (Exception e) {
             Debug.logError(e, "Error creating ProductPrice", MODULE);
+        }
+    }
+
+    private static void updatePrices(DispatchContext dctx, String partNumber, String priceType, String price, GenericValue userLogin) {
+        Delegator delegator = dctx.getDelegator();
+        try {
+            GenericValue existingPrice = EntityQuery.use(delegator)
+                    .from("ProductPrice")
+                    .where("productId", partNumber, "productPriceTypeId", priceType)
+                    .queryFirst();
+
+            Timestamp now = UtilDateTime.nowTimestamp();
+
+            if (existingPrice != null) {
+                BigDecimal existingPriceValue = existingPrice.getBigDecimal("price");
+                BigDecimal newPriceValue = new BigDecimal(price);
+
+                if (existingPriceValue.compareTo(newPriceValue) == 0) {
+                    Debug.logInfo("Price already exists with the same value for ProductId: " + partNumber, MODULE);
+                    return;
+                } else {
+                    existingPrice.set("thruDate", now);
+                    existingPrice.store();
+                    Debug.logInfo("Updated thruDate for existing price for PartNumber: " + partNumber, MODULE);
+                }
+            } else {
+                Debug.logInfo("No existing price found for PartNumber: " + partNumber + " and PriceType: " + priceType, MODULE);
+            }
+            createPrices(dctx, partNumber, priceType, price, userLogin);
+            Debug.logInfo("New Product Price created successfully for PartNumber: " + partNumber, MODULE);
+
+        } catch (GenericEntityException e) {
+            Debug.logError(e, "Exception occurred in updatePrices for PartNumber: " + partNumber, MODULE);
         }
     }
 
