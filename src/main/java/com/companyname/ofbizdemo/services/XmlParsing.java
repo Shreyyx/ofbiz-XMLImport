@@ -540,6 +540,15 @@ public class XmlParsing {
                         updateExtendedProductInformation(dctx, expiCode, finalExtendedProductInformationText, partNumber, userLogin);
                     }
                 }
+
+                if (productAttributes != null) {
+                    for (Map<String, String> attrInfo : productAttributes) {
+                        String attributeId = attrInfo.getOrDefault("AttributeID", "");
+                        String finalProductAttributeText = attrInfo.getOrDefault("ProductAttribute", "");
+                        updateProductAttribute(dctx, partNumber, attributeId, finalProductAttributeText, userLogin);
+                    }
+                }
+
 //                if (packageDetails != null) {
 //                    updatePackages(dctx, packageDetails, partNumber, userLogin);
 //                }
@@ -1368,6 +1377,47 @@ public class XmlParsing {
             }
         } catch (Exception e) {
             Debug.logError("Error creating product attribute: " + e.getMessage(), MODULE);
+        }
+    }
+
+    public static void updateProductAttribute(DispatchContext dctx, String partNumber, String attributeId, String finalProductAttributeText, GenericValue userLogin) {
+        Delegator delegator = dctx.getDelegator();
+
+        try {
+            GenericValue existingProductAttribute = EntityQuery.use(delegator)
+                    .from("ProductAttribute")
+                    .where("productId", partNumber, "attrName", attributeId)
+                    .queryFirst();
+
+            if (existingProductAttribute != null) {
+                String existingAttrValue = existingProductAttribute.getString("attrValue");
+
+                if (!Objects.equals(existingAttrValue, finalProductAttributeText)) {
+                    Map<String, Object> updateParams = UtilMisc.toMap(
+                            "productId", partNumber,
+                            "attrName", attributeId,
+                            "attrValue", finalProductAttributeText,
+                            "attrType", "PADB_ATTRIBUTE",
+                            "userLogin", userLogin
+                    );
+                    Map<String, Object> updateResult = dctx.getDispatcher().runSync("updateProductAttribute", updateParams);
+
+                    if (ServiceUtil.isSuccess(updateResult)) {
+                        Debug.logInfo("Updated ProductAttribute for productId: " + partNumber + ", attribute: " + attributeId, MODULE);
+                    } else {
+                        Debug.logError("Failed to update ProductAttribute: " + updateResult.get("errorMessage"), MODULE);
+                    }
+                } else {
+                    Debug.logInfo("ProductAttribute already exists with the same value for productId: " + partNumber + ", attribute: " + attributeId, MODULE);
+                }
+            } else {
+                Debug.logWarning("ProductAttribute does not exist for productId: " + partNumber + ", attribute: " + attributeId, MODULE);
+            }
+
+        } catch (GenericServiceException e) {
+            Debug.logError("ServiceException in updateProductAttribute: " + e.getMessage(), MODULE);
+        } catch (Exception e) {
+            Debug.logError("Unexpected error in updateProductAttribute: " + e.getMessage(), MODULE);
         }
     }
 
