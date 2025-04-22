@@ -338,6 +338,7 @@ public class XmlParsing {
                     case "ShippingWidth":
                     case "ShippingLength":
                     case "Weight":
+                    case "PackageUOM":
                             currentPackage.put(tagName, getCharacterData(reader));
                         break;
                     case "InnerQuantity":
@@ -1448,7 +1449,25 @@ public class XmlParsing {
                 Debug.logInfo("ProductFeatureCategory 'PACKAGE' created successfully!", MODULE);
             }
             for (Map<String, String> pkg : packages) { //loops through each package map in the list
+                String packageUOM = pkg.get("PackageUOM");
                 for (Map.Entry<String, String> entry : pkg.entrySet()) { //loops through each key value pair in the pkg
+
+                    GenericValue Uom = EntityQuery.use(delegator)
+                            .from("Uom")
+                            .where("uomId", packageUOM)
+                            .queryOne();
+                    if (Uom == null) {
+                        Map<String, Object> uomCtx = UtilMisc.toMap(
+                                "uomId", packageUOM,
+                                "uomTypeId", "OTHER_MEASURE",
+                                "abbreviation", packageUOM,
+                                "userLogin", userLogin
+                        );
+                        dctx.getDispatcher().runSync("createUom", uomCtx);
+                        Debug.logInfo("Uom created successfully!", MODULE);
+                    }else {
+                        Debug.logInfo("Uom already exists: " + packageUOM, MODULE);
+                    }
 
                     //then accessing these key value pairs
                     String tagName = entry.getKey();
@@ -1468,12 +1487,13 @@ public class XmlParsing {
                         productFeatureTypeId = "OTHER_FEATURE";
                     }
 
+                    //for internally nested elements uom id is different so have to handle that case as well
                     Map<String, Object> featureCtx = new HashMap<>();
                     featureCtx.put("productFeatureId", productFeatureId);
                     featureCtx.put("productFeatureTypeId", productFeatureTypeId);
                     featureCtx.put("productFeatureCategoryId", "PACKAGE");
-                    featureCtx.put("description",tagName);
-                    featureCtx.put("numberSpecified", tagValue);
+                    featureCtx.put("description", tagName + ": " + tagValue);
+                    featureCtx.put("uomId", packageUOM);
                     featureCtx.put("userLogin", userLogin);
                     Debug.logInfo("Creating ProductFeature with context: " + featureCtx, MODULE);
 
