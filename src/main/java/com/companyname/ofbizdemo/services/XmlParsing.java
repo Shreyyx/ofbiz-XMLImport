@@ -559,9 +559,9 @@ public class XmlParsing {
                     }
                 }
 
-//                if (packageDetails != null) {
-//                    updatePackages(dctx, packageDetails, partNumber, userLogin);
-//                }
+                if (packageDetails != null) {
+                    updatePackages(dctx, packageDetails, partNumber, userLogin);
+                }
                 if (digitalAssetDetail != null) {
                     for (Map<String, String> digitalAssetInfo : digitalAssetDetail) {
                         String languageCode = digitalAssetInfo.getOrDefault("LanguageCode", "");
@@ -1511,73 +1511,105 @@ public class XmlParsing {
         }
     }
 
-//    public static void updatePackages(DispatchContext dctx, List<Map<String, String>> packages, String partNumber, GenericValue userLogin) {
-//        Delegator delegator = dctx.getDelegator();
-//
-//        try {
-//            GenericValue productFeatureCategory = EntityQuery.use(delegator)
-//                    .from("ProductFeatureCategory")
-//                    .where("productFeatureCategoryId", "PACKAGE")
-//                    .queryOne();
-//            if (productFeatureCategory == null) {
-//                Debug.logWarning("ProductFeatureCategory 'PACKAGE' does not exist. Skipping update.", MODULE);
-//                return;
-//            }
-//            for (Map<String, String> pkg : packages) {
-//                for (Map.Entry<String, String> entry : pkg.entrySet()) {
-//                    String tagName = entry.getKey();
-//                    String tagValue = entry.getValue();
-//
-//                    if (UtilValidate.isEmpty(tagValue))
-//                        continue;
-//
-//                    GenericValue existingFeature = EntityQuery.use(delegator)
-//                            .from("ProductFeature")
-//                            .where("productFeatureCategoryId", "PACKAGE", "description", tagName)
-//                            .queryFirst();
-//
-//                    if (existingFeature != null) {
-//                        String productFeatureId = existingFeature.getString("productFeatureId");
-//                        String existingValue = existingFeature.getString("numberSpecified");
-//
-//                        if (!Objects.equals(existingValue, tagValue)) {
-//                            Map<String, Object> updateCtx = new HashMap<>();
-//                            updateCtx.put("productFeatureId", productFeatureId);
-//                            updateCtx.put("productFeatureTypeId", existingFeature.getString("productFeatureTypeId"));
-//                            updateCtx.put("productFeatureCategoryId", "PACKAGE");
-//                            updateCtx.put("description", tagName);
-//                            updateCtx.put("numberSpecified", tagValue);
-//                            updateCtx.put("userLogin", userLogin);
-//
-//                            Map<String, Object> result = dctx.getDispatcher().runSync("updateProductFeature", updateCtx);
-//                            if (ServiceUtil.isSuccess(result)) {
-//                                Debug.logInfo("Updated ProductFeature: " + tagName + " = " + tagValue+" and featureId: "+ productFeatureId, MODULE);
-//                            } else {
-//                                Debug.logError("Failed to update ProductFeature for " + tagName + ": " + result.get("errorMessage"), MODULE);
-//                            }
-//                        } else {
-//                            Debug.logInfo("No change for ProductFeature: " + tagName + ". Skipping update.", MODULE);
-//                        }
-//                        GenericValue appl = EntityQuery.use(delegator)
-//                                .from("ProductFeatureAppl")
-//                                .where("productId", partNumber, "productFeatureId", productFeatureId)
-//                                .queryFirst();
-//
-//                        if (appl == null) {
-//                            applyFeatureToProduct(dctx, partNumber, productFeatureId, userLogin);
-//                            Debug.logInfo("Applied existing ProductFeature to product: " + partNumber, MODULE);
-//                        }
-//
-//                    } else {
-//                        Debug.logWarning("ProductFeature not found for tag: " + tagName + " under category 'PACKAGE'. Consider creating it first.", MODULE);
-//                    }
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            Debug.logError("Exception while updating package features: " + e.getMessage(), MODULE);
-//        }
-//    }
+    public static void updatePackages(DispatchContext dctx, List<Map<String, String>> packages, String partNumber, GenericValue userLogin) {
+        Delegator delegator = dctx.getDelegator();
+
+        try {
+            GenericValue productFeatureCategory = EntityQuery.use(delegator)
+                    .from("ProductFeatureCategory")
+                    .where("productFeatureCategoryId", "PACKAGE")
+                    .queryOne();
+
+            if (productFeatureCategory == null) {
+                Debug.logWarning("ProductFeatureCategory 'PACKAGE' does not exist. Skipping update.", MODULE);
+                return;
+            }
+
+            for (Map<String, String> pkg : packages) {
+                String packageUOM = pkg.get("PackageUOM");
+                if (UtilValidate.isEmpty(packageUOM)) {
+                    Debug.logWarning("Missing PackageUOM in package map, skipping.", MODULE);
+                    continue;
+                }
+
+                for (Map.Entry<String, String> entry : pkg.entrySet()) {
+                    String tagName = entry.getKey();
+                    String tagValue = entry.getValue();
+
+                    if ("PackageUOM".equals(tagName) || UtilValidate.isEmpty(tagValue)) {
+                        continue;
+                    }
+
+                    String productFeatureTypeId;
+                    if ("Weight".equalsIgnoreCase(tagName)) {
+                        productFeatureTypeId = "NET_WEIGHT";
+                    } else if (tagName.startsWith("Merchandising") || tagName.startsWith("Shipping") || "DimensionsUOM".equals(tagName)) {
+                        productFeatureTypeId = "DIMENSION";
+                    } else {
+                        productFeatureTypeId = "OTHER_FEATURE";
+                    }
+
+                    String expectedDescriptionPrefix = tagName + ":";
+
+                    List<GenericValue> matchingFeatures = EntityQuery.use(delegator)
+                            .from("ProductFeature")
+                            .where("productFeatureCategoryId", "PACKAGE", "uomId", packageUOM)
+                            .queryList();
+
+                    GenericValue existingFeature = null;
+
+                    for (GenericValue feature : matchingFeatures) {
+                        String desc = feature.getString("description");
+                        if (desc != null && desc.startsWith(expectedDescriptionPrefix)) {
+                            existingFeature = feature;
+                            break;
+                        }
+                    }
+
+                    if (existingFeature != null) {
+                        String productFeatureId = existingFeature.getString("productFeatureId");
+                        String existingDescription = existingFeature.getString("description");
+
+                        String newDescription = tagName + ": " + tagValue;
+
+                        if (!Objects.equals(existingDescription, newDescription)) {
+                            Map<String, Object> updateCtx = new HashMap<>();
+                            updateCtx.put("productFeatureId", productFeatureId);
+                            updateCtx.put("productFeatureTypeId", productFeatureTypeId);
+                            updateCtx.put("productFeatureCategoryId", "PACKAGE");
+                            updateCtx.put("description", newDescription);
+                            updateCtx.put("uomId", packageUOM);
+                            updateCtx.put("userLogin", userLogin);
+
+                            Map<String, Object> result = dctx.getDispatcher().runSync("updateProductFeature", updateCtx);
+                            if (ServiceUtil.isSuccess(result)) {
+                                Debug.logInfo("Updated ProductFeature: " + tagName + " = " + tagValue + ", ID: " + productFeatureId, MODULE);
+                            } else {
+                                Debug.logError("Failed to update ProductFeature for " + tagName + ": " + result.get("errorMessage"), MODULE);
+                            }
+                        } else {
+                            Debug.logInfo("No update needed for ProductFeature: " + tagName, MODULE);
+                        }
+
+                        GenericValue appl = EntityQuery.use(delegator)
+                                .from("ProductFeatureAppl")
+                                .where("productId", partNumber, "productFeatureId", productFeatureId)
+                                .queryFirst();
+
+                        if (appl == null) {
+                            applyFeatureToProduct(dctx, partNumber, productFeatureId, userLogin);
+                            Debug.logInfo("Applied ProductFeature to product: " + partNumber, MODULE);
+                        }
+
+                    } else {
+                        Debug.logWarning("ProductFeature not found for tag: " + tagName + " with category 'PACKAGE' and UOM: " + packageUOM, MODULE);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Debug.logError("Exception while updating package features: " + e.getMessage(), MODULE);
+        }
+    }
 
     private static void createPrices(DispatchContext dctx, String partNumber, String priceType, String price, GenericValue userLogin) {
         Delegator delegator = dctx.getDelegator();
@@ -1845,7 +1877,7 @@ public class XmlParsing {
                     "userLogin", userLogin
             );
 
-            Map<String, Object> result = dispatcher.runSync("updateDigitalAsset", updateAssetCtx);
+            Map<String, Object> result = dispatcher.runSync("updateDataResource", updateAssetCtx);
 
             if (ServiceUtil.isSuccess(result)) {
                 Debug.logInfo("Successfully updated digital asset with ID: " + dataResourceId, MODULE);
@@ -1853,33 +1885,33 @@ public class XmlParsing {
                 Debug.logError("Failed to update digital asset: " + result.get("errorMessage"), MODULE);
                 return;
             }
-//            Map<String, String> attributes = new HashMap<>();
-//            attributes.put("AssetType", assetType);
-//            attributes.put("Representation", representation);
-//            attributes.put("Background", background);
-//            attributes.put("OrientationView", orientationView);
-//            attributes.put("AssetHeight", assetHeight);
-//            attributes.put("AssetWidth", assetWidth);
-//
-//            for (Map.Entry<String, String> entry : attributes.entrySet()) {
-//                String attrName = entry.getKey();
-//                String attrValue = entry.getValue();
-//                if (UtilValidate.isEmpty(attrValue)) continue;
-//
-//                GenericValue existingAttr = EntityQuery.use(delegator)
-//                        .from("DataResourceAttribute")
-//                        .where("dataResourceId", dataResourceId, "attrName", attrName)
-//                        .queryFirst();
-//
-//                if (existingAttr == null) {
-//                    createDataResourceAttribute(dctx, assetType, representation, background, orientationView, assetHeight, assetWidth, partNumber, userLogin);
-//                    break;
-//                } else if (!attrValue.equals(existingAttr.getString("attrValue"))) {
-//                    existingAttr.set("attrValue", attrValue);
-//                    existingAttr.store();
-//                    Debug.logInfo("Updated DataResourceAttribute: " + attrName + " to " + attrValue, MODULE);
-//                }
-//            }
+            Map<String, String> attributes = new HashMap<>();
+            attributes.put("AssetType", assetType);
+            attributes.put("Representation", representation);
+            attributes.put("Background", background);
+            attributes.put("OrientationView", orientationView);
+            attributes.put("AssetHeight", assetHeight);
+            attributes.put("AssetWidth", assetWidth);
+
+            for (Map.Entry<String, String> entry : attributes.entrySet()) {
+                String attrName = entry.getKey();
+                String attrValue = entry.getValue();
+                if (UtilValidate.isEmpty(attrValue)) continue;
+
+                GenericValue existingAttr = EntityQuery.use(delegator)
+                        .from("DataResourceAttribute")
+                        .where("dataResourceId", dataResourceId, "attrName", attrName)
+                        .queryFirst();
+
+                if (existingAttr == null) {
+                    createDataResourceAttribute(dctx, assetType, representation, background, orientationView, assetHeight, assetWidth, partNumber, userLogin);
+                    break;
+                } else if (!attrValue.equals(existingAttr.getString("attrValue"))) {
+                    existingAttr.set("attrValue", attrValue);
+                    existingAttr.store();
+                    Debug.logInfo("Updated DataResourceAttribute: " + attrName + " to " + attrValue, MODULE);
+                }
+            }
 
         } catch (GenericEntityException | GenericServiceException e) {
             Debug.logError(e, "Error while updating digital asset details", MODULE);
